@@ -131,8 +131,8 @@ function renderPost() {
   const nextEl = el('post-next');
   if (nextEl && S) {
     const mode = S.getSort();
-    const prevId = S.prevOf(id, mode === 'desc');
-    const nextId = S.nextOf(id, mode === 'desc');
+    const prevId = S.prevOf(id, mode);
+    const nextId = S.nextOf(id, mode);
     const prev = prevId ? P[prevId] : null;
     const next = nextId ? P[nextId] : null;
     let html = '';

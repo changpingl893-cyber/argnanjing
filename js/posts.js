@@ -515,5 +515,37 @@ const POSTS = {
   },
 };
 
+// 赞数 / 回复数（外部可见的论坛数据；列表展示用，回复楼层仅示示例）
+// 剧情点：P3 私密帖（内容已转移）却有全站最高的赞 & 大量回复 —— 谁点的？他们在说什么？
+const STATS = {
+  '23': { likes: 86,   replies: 2 },
+  '1':  { likes: 312,  replies: 214 },
+  '21': { likes: 45,   replies: 9 },
+  '22': { likes: 77,   replies: 12 },
+  '24': { likes: 28,   replies: 6 },
+  '2':  { likes: 96,   replies: 156 },
+  '3':  { likes: 8600, replies: 405 },   // 私密帖 · 全站最高赞（悬疑点）
+  '25': { likes: 33,   replies: 8 },
+  '4':  { likes: 68,   replies: 47 },
+  '20': { likes: 0,    replies: 0 },     // 已删除
+  '5':  { likes: 121,  replies: 39 },
+  '6':  { likes: 158,  replies: 41 },
+  '7':  { likes: 19,   replies: 13 },
+  '26': { likes: 47,   replies: 22 },
+  '8':  { likes: 9,    replies: 264 },   // 网暴辩解帖：被喷的帖赞少回多
+  '9':  { likes: 12,   replies: 310 },   // 心碎帖：最后一帖，围观者众
+  '10': { likes: 54,   replies: 33 },
+  '11': { likes: 131,  replies: 156 },
+  '12': { likes: 201,  replies: 203 },
+  '13': { likes: 11,   replies: 17 },
+  '14': { likes: 29,   replies: 49 },
+  '15': { likes: 64,   replies: 31 },
+  '16': { likes: 23,   replies: 18 },
+  '17': { likes: 0,    replies: 0 },     // 求助帖 · 无人回应
+  '18': { likes: 3,    replies: 0 },     // 最后的长文 · 只有三个赞，没有回复
+  '19': { likes: 0,    replies: 0 },     // 最后一条留言 · 无人
+};
+window.STATS = STATS;
+
 window.AUTHORS = AUTHORS;
 window.POSTS = POSTS;

@@ -41,11 +41,42 @@
       return desc ? list.reverse() : list;
     },
 
-    /* ------ 排序偏好 ------ */
-    getSort() { try { return localStorage.getItem(SORT_KEY) === 'desc' ? 'desc' : 'asc'; } catch (e) { return 'asc'; } },
-    setSort(mode) { try { localStorage.setItem(SORT_KEY, mode === 'desc' ? 'desc' : 'asc'); } catch (e) {} },
+    /* ------ 排序偏好（asc 最早 / desc 最新 / hot 热门） ------ */
+    getSort() {
+      try { const v = localStorage.getItem(SORT_KEY); return ['hot', 'desc'].includes(v) ? v : 'asc'; } catch (e) { return 'asc'; }
+    },
+    setSort(mode) { try { localStorage.setItem(SORT_KEY, ['hot', 'desc'].includes(mode) ? mode : 'asc'); } catch (e) {} },
 
-    /* ------ 下一篇（按当前排序方向） ------ */
+    /* ------ 帖子热度（赞×2 + 回复×10） ------ */
+    hotScore(id) {
+      const st = (window.STATS || {})[id] || {};
+      const replies = st.replies != null ? st.replies : (((window.POSTS || {})[id] || {}).replies || []).length;
+      return (st.likes || 0) * 2 + (replies || 0) * 10;
+    },
+    statsOf(id) {
+      const st = (window.STATS || {})[id] || {};
+      const fallback = ((window.POSTS || {})[id] || {}).replies || [];
+      return {
+        likes: st.likes != null ? st.likes : 0,
+        replies: st.replies != null ? st.replies : fallback.length
+      };
+    },
+
+    /* ------ 全部帖子（asc 时间正序 / desc 时间倒序 / hot 热度） ------ */
+    allPosts(mode) {
+      const P = window.POSTS || {};
+      let list = Object.entries(P);
+      if (mode === 'desc') {
+        list = list.sort((a, b) => b[1].date.localeCompare(a[1].date));
+      } else if (mode === 'hot') {
+        list = list.sort((a, b) => api.hotScore(b[0]) - api.hotScore(a[0]));
+      } else {
+        list = list.sort((a, b) => a[1].date.localeCompare(b[1].date));
+      }
+      return list;
+    },
+
+    /* ------ 上一篇 / 下一篇（按当前排序方向） ------ */
     nextOf(id, desc) {
       const list = api.allPosts(desc).map(([pid]) => pid);
       const i = list.indexOf(String(id));

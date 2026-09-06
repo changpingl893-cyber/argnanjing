@@ -13,10 +13,11 @@
 
   function render() {
     if (!body || !S) return;
-    const desc = currentSort() === 'desc';
+    const mode = currentSort();
     let html = '';
 
-    S.allPosts(desc).forEach(([id, p]) => {
+    S.allPosts(mode).forEach(([id, p]) => {
+      const st = S.statsOf(id);
       const badgeCls = p.deleted ? 'badge-dead' : (p.private ? 'badge-private' : (p.badgeClass || ''));
       html += `
       <article class="post-row ${p.deleted ? 'post-row-dead' : ''}" data-post="${id}" data-cat="${p.cat || ''}" style="cursor:pointer">
@@ -27,7 +28,7 @@
         <div class="post-foot">
           <span class="post-author">${p.authorName}</span>
           <span class="post-date">${p.date}</span>
-          <span class="post-replies">回复 ${(p.replies || []).length}</span>
+          <span class="post-replies">赞 ${st.likes} · 回复 ${st.replies}</span>
           ${p.deleted ? '<span class="dead-chip">此帖已被删除</span>' : ''}
           ${p.private ? '<span class="private-chip">内容已转移</span>' : ''}
         </div>
@@ -49,16 +50,19 @@
     });
   }
 
-  /* ===== 排序切换（最早 / 最新） ===== */
+  /* ===== 排序切换（最早 / 最新 / 热门） ===== */
   const ascBtn = document.getElementById('sort-asc');
   const descBtn = document.getElementById('sort-desc');
+  const hotBtn = document.getElementById('sort-hot');
   function updateSortBtns() {
     const cur = currentSort();
     if (ascBtn) ascBtn.className = 'sort-link' + (cur === 'asc' ? ' active' : '');
     if (descBtn) descBtn.className = 'sort-link' + (cur === 'desc' ? ' active' : '');
+    if (hotBtn) hotBtn.className = 'sort-link' + (cur === 'hot' ? ' active' : '');
   }
   if (ascBtn) ascBtn.addEventListener('click', (e) => { e.preventDefault(); S.setSort('asc'); render(); });
   if (descBtn) descBtn.addEventListener('click', (e) => { e.preventDefault(); S.setSort('desc'); render(); });
+  if (hotBtn) hotBtn.addEventListener('click', (e) => { e.preventDefault(); S.setSort('hot'); render(); });
 
   /* ===== 搜索过滤 ===== */
   const searchInput = document.querySelector('.search-input');
