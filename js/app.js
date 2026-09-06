@@ -1,8 +1,6 @@
-// 古时今日 · 论坛主站交互 + 归档渲染
-// 全部帖子直接可见可读（无锁定、无门槛）；只有两类特殊帖子：
-//   - 已删除：列表可见（灰色徽章），点进去是"该帖已被删除"
-//   - 私密：列表可见（粉紫徽章），点进去是"内容已转移至未公开区"
-// 帖子正文中的"相关帖"链接为纯跳转（无访问控制）。
+// 古时今日 · 论坛主站交互
+// 正常论坛列表：全部帖子按时间正序/倒序排列（可切换、记忆偏好）。
+// 特殊帖只有两类（已删除/私密），仍是正常列表项，点进去看对应提示。
 
 (function () {
   const P = window.POSTS || {};
@@ -11,46 +9,35 @@
   const body = document.getElementById('post-list-body');
   let rows = [];
 
+  function currentSort() { return S.getSort(); }
+
   function render() {
     if (!body || !S) return;
+    const desc = currentSort() === 'desc';
     let html = '';
 
-    S.CHAPTERS.forEach(ch => {
-      const posts = S.chapterPosts(ch.id); // [[id, post], ...]
-      if (!posts.length) return;
-      const total = posts.length;
-      const done = posts.filter(([id]) => S.isRead(id)).length;
-
+    S.allPosts(desc).forEach(([id, p]) => {
+      const badgeCls = p.deleted ? 'badge-dead' : (p.private ? 'badge-private' : (p.badgeClass || ''));
       html += `
-      <div class="chapter-head">
-        <span class="chapter-index">第 ${['c1','c2','c3','c4','c5'].indexOf(ch.id) + 1} 章</span>
-        <b class="chapter-name">${ch.name} · ${ch.period}</b>
-        <span class="chapter-progress">${done}/${total}</span>
-        <span class="chapter-desc">${ch.desc}</span>
-      </div>`;
-
-      posts.forEach(([id, p]) => {
-        const badgeCls = p.deleted ? 'badge-dead' : (p.private ? 'badge-private' : (p.badgeClass || ''));
-        html += `
-        <article class="post-row ${p.deleted ? 'post-row-dead' : ''}" data-post="${id}" data-cat="${p.cat || ''}" style="cursor:pointer">
-          <div class="post-head">
-            <span class="post-badge ${badgeCls}">${p.badge || '帖'}</span>
-            <h2 class="post-title ${p.deleted ? 'post-title-deleted' : ''}">${p.title}</h2>
-          </div>
-          <div class="post-foot">
-            <span class="post-author">${p.authorName}</span>
-            <span class="post-date">${p.date}</span>
-            <span class="post-replies">回复 ${(p.replies || []).length}</span>
-            ${p.deleted ? '<span class="dead-chip">此帖已被删除</span>' : ''}
-            ${p.private ? '<span class="private-chip">内容已转移</span>' : ''}
-          </div>
-        </article>`;
-      });
+      <article class="post-row ${p.deleted ? 'post-row-dead' : ''}" data-post="${id}" data-cat="${p.cat || ''}" style="cursor:pointer">
+        <div class="post-head">
+          <span class="post-badge ${badgeCls}">${p.badge || '帖'}</span>
+          <h2 class="post-title ${p.deleted ? 'post-title-deleted' : ''}">${p.title}</h2>
+        </div>
+        <div class="post-foot">
+          <span class="post-author">${p.authorName}</span>
+          <span class="post-date">${p.date}</span>
+          <span class="post-replies">回复 ${(p.replies || []).length}</span>
+          ${p.deleted ? '<span class="dead-chip">此帖已被删除</span>' : ''}
+          ${p.private ? '<span class="private-chip">内容已转移</span>' : ''}
+        </div>
+      </article>`;
     });
 
     body.innerHTML = html;
     rows = Array.from(body.querySelectorAll('.post-row[data-post]'));
     bindRows();
+    updateSortBtns();
   }
 
   function bindRows() {
@@ -61,6 +48,17 @@
       });
     });
   }
+
+  /* ===== 排序切换 ===== */
+  const ascBtn = document.getElementById('sort-asc');
+  const descBtn = document.getElementById('sort-desc');
+  function updateSortBtns() {
+    const cur = currentSort();
+    if (ascBtn) ascBtn.className = 'sort-btn' + (cur === 'asc' ? ' active' : '');
+    if (descBtn) descBtn.className = 'sort-btn' + (cur === 'desc' ? ' active' : '');
+  }
+  if (ascBtn) ascBtn.addEventListener('click', () => { S.setSort('asc'); render(); });
+  if (descBtn) descBtn.addEventListener('click', () => { S.setSort('desc'); render(); });
 
   /* ===== 搜索过滤 ===== */
   const searchInput = document.querySelector('.search-input');
@@ -75,10 +73,6 @@
       const show = !kw || hay.includes(kw);
       el.style.display = show ? '' : 'none';
       if (show) visible++;
-    });
-    body.querySelectorAll('.chapter-head').forEach(h => {
-      const next = h.nextElementSibling;
-      h.style.display = (next && next.style.display !== 'none') ? '' : 'none';
     });
     if (emptyTip) emptyTip.style.display = visible ? 'none' : '';
   }
@@ -143,5 +137,5 @@
 
   /* ===== 启动 ===== */
   render();
-  console.log('[古时今日] 论坛主站已加载 · 共 ' + S.totalCount() + ' 帖');
+  console.log('[古时今日] 论坛主站已加载 · 共 ' + S.totalCount() + ' 帖 · 排序 ' + currentSort());
 })();

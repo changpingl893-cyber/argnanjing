@@ -1,6 +1,5 @@
 // 我的归档（账号页）
-// 无锁定无门槛：展示阅读进度 / 章节完成度 / 阅读记录 /（全读完后的）彩蛋指引
-// 网名可选，仅作装饰（本机保存）
+// 全部帖子一览（按时间排序，正/倒均可）、阅读记录、全读完后的彩蛋指引；网名可选。
 
 (function () {
   const S = window.Story;
@@ -11,6 +10,7 @@
   function render() {
     const total = S.totalCount();
     const readCount = S.readList().length;
+    const mode = S.getSort();
 
     /* 归档卡 */
     setText('acct-avatar', S.getNick() ? S.getNick().charAt(0) : '访');
@@ -19,42 +19,26 @@
     document.getElementById('acct-bar-fill').style.width = (readCount / total * 100) + '%';
     setText('acct-progress-text',
       S.completed() ? '全部读完。谢谢你来过。'
-        : '按时间线从最早的帖子读起即可。其中两帖已被删除/设为私密，只留下标题。');
+        : '按时间顺序读即可。其中两帖已被删除/设为私密，只留下标题。');
 
-    /* 章节进度 */
+    /* 全部帖子一览 */
     const chEl = document.getElementById('acct-chapters');
-    let chHtml = '';
-    S.CHAPTERS.forEach(ch => {
-      const posts = S.chapterPosts(ch.id);
-      const totalC = posts.length;
-      const done = posts.filter(([id]) => S.isRead(id)).length;
-      const finished = done >= totalC && totalC > 0;
-      chHtml += `
-      <div class="acct-chapter ${finished ? 'done' : ''}">
-        <div class="acct-chap-head">
-          <span class="acct-chap-period">${ch.period}</span>
-          <b class="acct-chap-name">${ch.name}</b>
-          <span class="acct-chap-status">${finished ? '✅ 全部读毕 ' + done + '/' + totalC : done + '/' + totalC}</span>
-        </div>
-        <p class="acct-chap-desc">${ch.desc}</p>
-        <div class="acct-chap-posts">
-          ${posts.map(([pid, p]) => {
-            const read = S.isRead(pid);
-            const icon = read ? '✓' : '○';
-            const cls = read ? 'read' : 'unread';
-            const tag = p.deleted ? '（已删除）' : (p.private ? '（私密）' : '');
-            return `<a class="acct-post ${cls}" href="post.html?id=${pid}">${icon} ${p.date} · ${p.title} ${tag}</a>`;
-          }).join('')}
-        </div>
-      </div>`;
+    let html = '<div class="acct-chapter">';
+    S.allPosts(mode === 'desc').forEach(([pid, p]) => {
+      const read = S.isRead(pid);
+      const icon = read ? '✓' : '○';
+      const cls = read ? 'read' : 'unread';
+      const tag = p.deleted ? '（已删除）' : (p.private ? '（私密）' : '');
+      html += `<a class="acct-post ${cls}" href="post.html?id=${pid}">${icon} ${p.date} · ${p.title} ${tag}</a>`;
     });
-    chEl.innerHTML = chHtml;
+    html += '</div>';
+    chEl.innerHTML = html;
 
     /* 阅读记录（最近在前的已读帖子） */
     const rlEl = document.getElementById('acct-readlist');
     const readList = S.readList().slice().reverse();
     if (!readList.length) {
-      rlEl.innerHTML = '<p class="acct-empty">还没有阅读记录。<a href="post.html?id=1">从最早的帖子开始 →</a></p>';
+      rlEl.innerHTML = '<p class="acct-empty">还没有阅读记录。<a href="post.html?id=23">从最早的帖子开始 →</a></p>';
     } else {
       rlEl.innerHTML = readList.map(pid => {
         const p = P[pid];

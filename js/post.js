@@ -127,21 +127,35 @@ function renderPost() {
     floors.innerHTML = repliesHtml;
   }
 
-  /* ===== 下一篇导航（时间线正序） ===== */
+  /* ===== 上一篇 / 下一篇导航（按当前排序方向） ===== */
   const nextEl = el('post-next');
   if (nextEl && S) {
-    const nextId = S.nextOf(id);
+    const mode = S.getSort();
+    const prevId = S.prevOf(id, mode === 'desc');
+    const nextId = S.nextOf(id, mode === 'desc');
+    const prev = prevId ? P[prevId] : null;
     const next = nextId ? P[nextId] : null;
+    let html = '';
+    if (prev) {
+      html += `
+        <div class="next-card">
+          <div class="next-label">上一篇 · ${prev.date}</div>
+          <a class="next-title" href="post.html?id=${prevId}">${prev.title}</a>
+          <div class="next-meta">${prev.authorName} · ${prev.badge || '帖'}</div>
+        </div>`;
+    }
     if (next) {
-      nextEl.innerHTML = `
+      html += `
         <div class="next-card">
           <div class="next-label">下一篇 · ${next.date}</div>
           <a class="next-title" href="post.html?id=${nextId}">${next.title}</a>
           <div class="next-meta">${next.authorName} · ${next.badge || '帖'}</div>
         </div>`;
-    } else {
-      nextEl.innerHTML = `<div class="next-card next-end">—— 已经是归档中最后一篇 · 返回<a href="index.html">论坛存档</a> ——</div>`;
     }
+    if (!html) {
+      html = `<div class="next-card next-end">—— 归档中已是第一篇 · 返回<a href="index.html">论坛</a> ——</div>`;
+    }
+    nextEl.innerHTML = html;
   }
 
   /* ===== 回复流程（必然失败） ===== */

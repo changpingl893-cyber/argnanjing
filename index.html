@@ -63,7 +63,10 @@
 <div class="page-wrap">
   <main class="post-list">
     <!-- 档案馆说明行 -->
-    <div class="post-count">归档模式 · 帖子按时间正序展示（2016 → 2018）· <a href="account.html" style="color:var(--blue-link)">我的归档</a></div>
+    <div class="post-count">归档模式 ·
+      <button class="sort-btn active" id="sort-asc">正序</button><button class="sort-btn" id="sort-desc">倒序</button>
+      · <a href="account.html" style="color:var(--blue-link)">我的归档</a>
+    </div>
     <div id="post-list-body"></div>
     <div class="post-count" id="empty-tip" style="display:none">没有找到相关帖子 —— 就像这个网站本身一样空。</div>
   </main>
