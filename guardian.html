@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>用户主页 · 古时今日</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/guardian.css">
+<link rel="stylesheet" href="css/vintage.css">
+</head>
+<body class="guardian-body">
+
+<!-- 顶部：渐变背景 + 虚拟形象 + 装饰贴纸 -->
+<header class="g-banner">
+  <div class="g-banner-art"></div>
+  <button class="g-back" onclick="history.back()">←</button>
+  <span class="g-tag">虚拟形象</span>
+</header>
+
+<!-- 头像 + 关注/发私信 -->
+<div class="g-info">
+  <div class="g-avatar-row">
+    <div class="g-avatar" id="g-avatar">守</div>
+    <div class="g-actions">
+      <button class="g-btn g-btn-follow" id="g-follow-btn">已关注</button>
+      <button class="g-btn g-btn-msg" id="g-msg-btn">发私信</button>
+    </div>
+  </div>
+
+  <!-- 用户名 + 徽章 -->
+  <div class="g-name-row">
+    <h1 class="g-name" id="g-name">守夜人</h1>
+    <span class="g-badge svip">SVIP</span>
+    <span class="g-badge lv" id="g-lv">Lv.8</span>
+  </div>
+
+  <!-- ID / 吧龄信息行 -->
+  <div class="g-uid-line" id="g-uid">
+    <span class="g-uid">ID 15103256</span>
+    <span class="g-sep">·</span>
+    <span class="g-age">吧龄 14.4 年</span>
+    <span class="g-sep">·</span>
+    <span class="g-loc">江苏</span>
+  </div>
+
+  <!-- 签名 -->
+  <p class="g-sign" id="g-sign">该用户还没有填写签名…</p>
+</div>
+
+<!-- 数据简表 -->
+<div class="g-stats">
+  <div class="g-stat"><b id="g-praise">3969</b><span>获赞</span></div>
+  <div class="g-stat"><b id="g-follow">4</b><span>关注</span></div>
+  <div class="g-stat"><b id="g-fans">3990</b><span>粉丝</span></div>
+</div>
+
+<!-- tab -->
+<nav class="g-tabs">
+  <a class="g-tab active" href="#" data-view="posts" id="tab-posts">帖子</a>
+  <a class="g-tab" href="#" data-view="dyn">动态</a>
+  <a class="g-tab" href="#" data-view="info">资料</a>
+</nav>
+
+<!-- 视图：帖子 -->
+<section class="g-view" id="view-posts">
+  <div class="g-about-title">TA 发过的帖子</div>
+  <div class="g-post-list" id="g-post-list">
+    <p class="g-about-body">该用户没有发过帖子。</p>
+  </div>
+</section>
+
+<!-- 视图：动态 -->
+<section class="g-view" id="view-dyn" style="display:none">
+  <div id="g-dyn-body"></div>
+</section>
+
+<!-- 视图：资料 -->
+<section class="g-view" id="view-info" style="display:none">
+  <div class="g-about">
+    <h2 class="g-about-title">账号信息</h2>
+    <p class="g-about-body" id="g-account"></p>
+    <h2 class="g-about-title" style="margin-top:16px">关于 TA</h2>
+    <p class="g-about-body" id="g-about"></p>
+  </div>
+</section>
+
+<p class="g-note">本页面为废弃网站残留的用户数据 · 最后访问于 2018 年</p>
+
+<script src="js/dialog.js"></script>
+<script src="js/posts.js"></script>
+<script src="js/guardian.js"></script>
+</body>
+</html>

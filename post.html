@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>帖子详情 · 古时今日</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/post.css">
+<link rel="stylesheet" href="css/vintage.css">
+</head>
+<body class="post-page">
+
+<header class="site-header">
+  <div class="logo-area">
+    <a class="logo-badge" href="index.html">古</a>
+    <span class="logo-name">古时今日</span>
+  </div>
+  <div class="search-area">
+    <input class="search-input" type="search" placeholder="搜索帖子 / 线索…">
+    <button class="search-btn">搜索</button>
+  </div>
+</header>
+
+<!-- 帖子头 -->
+<div class="post-hero">
+  <a class="back-link" href="index.html">← 返回论坛</a>
+  <span class="post-cat-badge" id="post-badge">公告</span>
+  <h1 class="post-hero-title" id="post-title">帖子标题</h1>
+  <div class="post-lock-note" id="post-lock-note" style="display:none"></div>
+</div>
+
+<!-- 帖子主体 -->
+<main class="post-detail">
+  <!-- 楼主楼 -->
+  <div class="floor floor-op" id="floor-op">
+    <div class="floor-user">
+      <a href="guardian.html?id=1">
+        <div class="floor-avatar" id="op-avatar">守</div>
+        <div class="floor-username" id="op-name">守夜人</div>
+      </a>
+      <div class="floor-tags" id="op-tags"></div>
+      <div class="floor-rank">楼主</div>
+    </div>
+    <div class="floor-body">
+      <div class="floor-content" id="op-content"></div>
+      <img class="floor-image" id="op-image" alt="" style="display:none">
+      <div class="floor-ip" id="op-ip">IP属地：—</div>
+    </div>
+  </div>
+
+  <!-- 回复楼层容器 -->
+  <div class="floors" id="floors"></div>
+
+  <!-- 下一篇导航 -->
+  <div class="post-next" id="post-next"></div>
+</main>
+
+<div class="post-reply-bar">
+  <button class="reply-btn" id="reply-btn">回复</button>
+</div>
+
+<script src="js/dialog.js"></script>
+<script src="js/posts.js"></script>
+<script src="js/story.js"></script>
+<script src="js/post.js"></script>
+</body>
+</html>

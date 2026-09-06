@@ -1,0 +1,118 @@
+/* 守护者用户主页样式（复刻图2 贴吧用户资料页） */
+
+.guardian-body {
+  background: #fff;
+  padding-bottom: 40px;
+}
+
+/* ===== 顶部渐变banner ===== */
+.g-banner {
+  position: relative;
+  height: 260px;
+  background: linear-gradient(135deg, #b19cff 0%, #d3c9ff 45%, #eef0ff 100%);
+  overflow: hidden;
+}
+.g-banner-art {
+  position: absolute; inset: 0;
+  /* 复刻图2 那些彩色贴纸装饰（用纯CSS点缀，后续可换真实贴图） */
+  background:
+    radial-gradient(circle at 20% 80%, rgba(255,255,255,.5), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,.4), transparent 45%),
+    radial-gradient(circle at 50% 30%, rgba(180,150,255,.35), transparent 50%);
+}
+.g-back {
+  position: absolute; top: 14px; left: 12px;
+  background: rgba(255,255,255,.7); border: none;
+  width: 34px; height: 34px; border-radius: 50%;
+  font-size: 18px; color: #555; cursor: pointer; z-index: 2;
+}
+.g-tag {
+  position: absolute; top: 16px; right: 50%;
+  transform: translateX(50%);
+  background: rgba(255,255,255,.75); color: #9a8cd0;
+  font-size: 12px; padding: 4px 14px; border-radius: 14px;
+}
+
+/* ===== 头像区 ===== */
+.g-info { padding: 20px 20px 6px; }
+.g-avatar-row { display: flex; justify-content: space-between; align-items: flex-end; }
+.g-avatar {
+  width: 96px; height: 96px; border-radius: 50%;
+  background: linear-gradient(135deg, #7fb0ff, #4b8cff);
+  color: #fff; font-size: 40px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border: 4px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  margin-top: -48px; /* 头像压住banner下沿 */
+}
+.g-actions { display: flex; gap: 8px; }
+.g-btn {
+  border: none; padding: 7px 18px; border-radius: 20px;
+  font-size: 13px; cursor: pointer;
+}
+.g-btn-follow { background: #eef1ff; color: #5b6bff; }
+.g-btn-msg { background: #5b6bff; color: #fff; }
+
+/* ===== 用户名 + 徽章 ===== */
+.g-name-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.g-name { font-size: 22px; font-weight: 800; }
+.g-badge {
+  font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600;
+}
+.g-badge.svip { background: linear-gradient(90deg,#7a5cd6,#5b6bff); color: #fff; }
+.g-badge.lv { background: #8fd9ff; color: #1c5f9e; }
+
+/* ===== ID信息行 ===== */
+.g-uid-line {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 8px; color: #999; font-size: 13px; flex-wrap: wrap;
+}
+.g-sep { color: #d0d0d0; }
+
+/* ===== 签名 ===== */
+.g-sign { color: #999; font-size: 14px; margin-top: 10px; }
+
+/* ===== 数据简表 ===== */
+.g-stats {
+  display: flex; gap: 32px; padding: 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.g-stat { display: flex; flex-direction: column; align-items: center; }
+.g-stat b { font-size: 20px; font-weight: 800; }
+.g-stat span { color: #999; font-size: 12px; margin-top: 2px; }
+
+/* ===== tab ===== */
+.g-tabs {
+  display: flex; gap: 30px; padding: 0 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.g-tab {
+  color: #999; font-size: 14px; text-decoration: none;
+  padding: 12px 2px; border-bottom: 2px solid transparent;
+}
+.g-tab.active { color: #5b6bff; border-bottom-color: #5b6bff; font-weight: 600; }
+
+/* ===== 简介 ===== */
+.g-about { padding: 18px 20px; }
+.g-about-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.g-about-body { color: #666; font-size: 14px; line-height: 1.8; }
+
+/* ===== 视图容器 ===== */
+.g-view { min-height: 120px; padding: 14px 20px 18px; }
+
+/* ===== TA 发过的帖子列表 ===== */
+.g-post-item {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 11px 0; border-bottom: 1px solid #f0f0f0;
+  text-decoration: none; color: inherit;
+}
+.g-post-item:hover .g-post-title { color: #5b6bff; }
+.g-post-badge {
+  font-size: 11px; padding: 1px 7px; border-radius: 3px;
+  background: #e8f0fe; color: #1a6ff0; flex-shrink: 0;
+}
+.g-post-title { font-size: 14px; font-weight: 600; color: #333; flex: 1 1 auto; min-width: 0; }
+.g-post-date { font-size: 12px; color: #999; }
+
+.g-note {
+  text-align: center; color: #bbb; font-size: 12px; margin-top: 30px; padding: 0 20px;
+}

@@ -1,0 +1,109 @@
+/* 古时今日 · 复古 Win98 风（废弃网站氛围）
+   系统报错弹窗 / 失效链接 / 无人回应的留言板 / 旧合影彩蛋 / 404 页 */
+
+/* ===== 复古弹窗（Win98 对话框） ===== */
+.v98-overlay {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, .28);
+  z-index: 999; display: none;
+}
+.v98-window {
+  position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  min-width: 320px; max-width: min(500px, calc(100vw - 32px));
+  background: #c0c0c0;
+  border: 2px solid; border-color: #fff #404040 #404040 #fff;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, .35);
+  z-index: 1000;
+  font-family: "SimSun", "宋体", "Microsoft YaHei", Arial, sans-serif;
+  display: none;
+}
+/* 静态模式（404 页复用，不做 fixed 居中） */
+.v98-window.static {
+  position: relative; left: auto; top: auto; transform: none;
+  display: block;
+}
+.v98-titlebar {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: #fff; padding: 4px 4px 4px 8px;
+  font-size: 12px; font-weight: 700; user-select: none;
+}
+.v98-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.v98-close {
+  width: 18px; height: 15px; flex: 0 0 auto;
+  background: #c0c0c0; color: #000;
+  border: 1px solid; border-color: #fff #404040 #404040 #fff;
+  font-size: 10px; line-height: 14px; text-align: center; cursor: pointer;
+}
+.v98-close:active { border-color: #404040 #fff #fff #404040; }
+.v98-body { padding: 16px; }
+.v98-msg { display: flex; gap: 12px; align-items: flex-start; }
+.v98-icon {
+  width: 34px; height: 34px; flex: 0 0 auto; border-radius: 50%;
+  border: 2px solid #303030;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; font-weight: 900; color: #fff; font-family: Arial;
+}
+.v98-icon.error { background: #d43a3a; }
+.v98-icon.warn  { background: #c78a00; }
+.v98-icon.info  { background: #2d6fd2; }
+.v98-text { flex: 1; min-width: 0; font-size: 13px; line-height: 1.8; color: #111; white-space: pre-wrap; word-break: break-word; }
+.v98-btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+.v98-btn {
+  min-width: 76px; padding: 5px 14px; font-size: 12px;
+  background: #c0c0c0; color: #111; border: 2px solid;
+  border-color: #fff #404040 #404040 #fff; cursor: pointer;
+  font-family: "SimSun", "宋体", Arial, sans-serif;
+}
+.v98-btn:active, .v98-btn.pressed { border-color: #404040 #fff #fff #404040; }
+.v98-btn:disabled { color: #8a8a8a; text-shadow: 1px 1px #fff; cursor: default; }
+.v98-input {
+  width: 100%; box-sizing: border-box; margin-top: 10px; padding: 6px 8px;
+  font-size: 12px; line-height: 1.6; font-family: inherit;
+  background: #fff; border: 2px solid; border-color: #404040 #fff #fff #404040;
+  outline: none; resize: vertical;
+}
+.v98-spin { display: inline-block; animation: v98spin 1s steps(8) infinite; }
+@keyframes v98spin { to { transform: rotate(360deg); } }
+
+/* ===== 失效链接（[已失效] 徽记 + 删除线） ===== */
+a.dead-link, span.dead-link { color: #9c9c9c; text-decoration: line-through; }
+a.dead-link:hover { color: #7a7a7a; }
+.dead-tag {
+  display: inline-block; font-size: 10px; color: #b9b9b9;
+  border: 1px solid #d9d9d9; border-radius: 2px; padding: 0 3px;
+  margin-left: 4px; text-decoration: none; vertical-align: 1px;
+}
+
+/* ===== 无人回应的留言板 ===== */
+.board-section {
+  background: var(--card, #fff); margin: 16px; border-radius: 8px;
+  padding: 14px 16px;
+}
+.board-title { font-size: 15px; font-weight: 700; }
+.board-sub { color: #999; font-size: 12px; margin: 2px 0 10px; }
+.board-msg { border-top: 1px dashed var(--line, #e8eef5); padding: 10px 0; }
+.board-meta { font-size: 12px; color: #8a8a8a; }
+.board-text { font-size: 13px; color: #555; margin-top: 4px; }
+.board-none { color: #bbb; font-size: 12px; padding: 8px 0; }
+
+/* ===== 旧合影彩蛋（相册卡片） ===== */
+.egg-album {
+  margin-top: 12px; background: #f7f9fd;
+  border: 1px solid var(--line, #e8eef5); border-radius: 8px; padding: 10px;
+}
+.egg-album img {
+  width: 100%; border-radius: 6px; cursor: zoom-in;
+  filter: sepia(.28) contrast(.92) brightness(1.02);
+}
+.egg-album img:hover { filter: sepia(.18) contrast(.96); }
+.egg-album-cap { font-size: 12px; color: #999; margin-top: 6px; line-height: 1.7; }
+
+/* ===== 404 页 ===== */
+body.err404 {
+  background: #c0c0c0;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 20px;
+}
+.err404-wrap { width: min(560px, 100%); }
+.err404-hint { color: #555; font-size: 12px; margin-top: 10px; line-height: 1.8; }
+.err404-stats { margin-top: 16px; }
