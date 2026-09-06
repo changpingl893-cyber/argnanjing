@@ -1,8 +1,10 @@
 // 帖子详情页逻辑
-// 等级门槛检查 → 权限不足提示；内容缺失(损坏)帖 → 破旧感提示；已读标记；回复失败流程；下一篇导航。
+// 隐藏帖（索引损坏）规则：未经"相关帖"链接（?id=X&ref=来源）进入的，一律提示"数据未能恢复"；
+// 从相关帖链接进入 → 允许阅读并标记恢复，此后主页正常显示。
 
 const params = new URLSearchParams(location.search);
 const id = params.get('id') || '1';
+const fromRef = params.get('ref');          // 来源帖 id（相关帖链接携带）
 const AUTH = window.AUTHORS || {};
 const P = window.POSTS || {};
 const S = window.Story;
@@ -13,13 +15,8 @@ function setText(id, val) { const e = el(id); if (e) e.textContent = val; }
 function authorOf(authorId) {
   return AUTH[authorId] || { name: '', title: '', lv: '', tag: '', ip: '', age: '' };
 }
-// 仅六位守护者有真实用户主页；游客作者显示为普通文本
 function isGuardian(authorId) {
   return ['1', '2', '3', '4', '5', '6'].includes(String(authorId));
-}
-function userWrap(authorId, authorName, inner) {
-  if (isGuardian(authorId)) return `<a href="guardian.html?id=${authorId}">${inner}</a>`;
-  return `<div style="color:inherit">${inner}</div>`;
 }
 function titleTagsHtml(a) {
   let html = '';
@@ -33,30 +30,41 @@ function avatarHtml(a) {
   return a.name.charAt(0);
 }
 
-/* ===== 等级门槛检查 ===== */
-if (S && !S.canRead(id)) {
-  const need = S.needLevel(id);
-  // 用"楼层"区域换成一个权限提示（diegetic：权限系统还在运行）
+/* ===== 可读性判定 ===== */
+const isHidden = S.isHidden(id);
+const canOpen = !isHidden || S.isRead(id) || !!fromRef;
+
+if (!canOpen) {
+  renderUnavailable();
+} else {
+  renderPost();
+  if (isHidden && !S.isRead(id)) {
+    // 从相关帖恢复：标记已读（此后主页显示）
+    S.markRead(id);
+  }
+}
+
+/* 未恢复的隐藏帖：数据未能恢复提示页（不暴露真实标题） */
+function renderUnavailable() {
   const floorOp = el('floor-op');
   if (floorOp) floorOp.style.display = 'none';
-  setText('post-title', post.title || '未知帖子');
-  const note = el('post-lock-note');
-  if (note) {
-    note.textContent = `该帖需 Lv.${need} 可见 · 当前等级 Lv.${S.level()} · 管理员已离任，权限系统仍在运行`;
-    note.style.display = 'block';
-  }
+  setText('post-title', '〔数据未能恢复 · 归档登记号 #' + id + '〕');
+  const badge = el('post-badge');
+  if (badge) badge.textContent = '损坏';
+
   const floors = el('floors');
   if (floors) {
     floors.innerHTML = `
       <div class="floor">
         <div class="floor-body">
           <div class="v98-msg" style="display:flex;gap:12px;align-items:flex-start">
-            <div class="v98-icon warn">!</div>
-            <div class="v98-text">
-              阅读权限不足（0x80004005）。\n\n
-              <b>${post.title || '未知帖子'}</b> 需要 Lv.${need} 才能查看。\n
-              等级按"读完的章节数"计算：每读完一章 +1。\n\n
-              已解锁的章节：${S.finishedChapters().map(c => c.name).join('、') || '（无）'}
+            <div class="v98-icon error">✕</div>
+            <div class="v98-text" style="white-space:normal">
+              <b>数据未能恢复（0x80004005）。</b><br><br>
+              该帖的归档索引已损坏，无法从论坛列表直接打开。<br><br>
+              这个站从 2018 年起就没人维护了。损坏的帖子在列表里只剩一个登记号
+              （#${id}）——它们不是被删了，是从没被保存下来。<br><br>
+              也许，某个仍然完好的旧帖里还留着它的痕迹。
             </div>
           </div>
           <div class="v98-btns">
@@ -65,15 +73,14 @@ if (S && !S.canRead(id)) {
         </div>
       </div>`;
   }
-  el('reply-btn') && (el('reply-btn').style.display = 'none');
-  console.log('[帖子详情] 权限不足：' + id);
-} else {
-  renderPost();
+  const replyBtn = el('reply-btn');
+  if (replyBtn) replyBtn.style.display = 'none';
+  console.log('[帖子详情] 索引损坏不可恢复：' + id);
 }
 
 function renderPost() {
-  /* ===== 已读标记（读完即打勾，驱动升级） ===== */
-  if (S) S.markRead(id);
+  /* ===== 恢复正常显示后：标记已读 ===== */
+  if (S && !S.isRead(id)) S.markRead(id);
 
   /* ===== 帖子头 ===== */
   if (el('post-badge')) { el('post-badge').textContent = post.badge || ''; el('post-badge').className = 'post-cat-badge ' + (post.badgeClass || ''); }
@@ -101,23 +108,10 @@ function renderPost() {
     }
   }
 
-  /* ===== 正文（损坏帖 → 破旧感提示） ===== */
+  /* ===== 正文 ===== */
   const contentEl = el('op-content');
   if (contentEl) {
-    if (post.content == null) {
-      contentEl.innerHTML = `
-        <div class="v98-msg" style="display:flex;gap:12px;align-items:flex-start">
-          <div class="v98-icon error">✕</div>
-          <div class="v98-text" style="white-space:normal">
-            <b>无法显示帖子内容。</b><br><br>
-            错误（0x80004005）：找不到该帖保存的任何数据。<br><br>
-            这个网站从来不做备份——管理员离任后，大部分帖子只剩下标题还挂在列表里。
-            它们不是被删了，只是从没被保存下来。
-          </div>
-        </div>`;
-    } else {
-      contentEl.innerHTML = post.content.split('\n').map(l => `<p>${l}</p>`).join('');
-    }
+    contentEl.innerHTML = post.content.split('\n').map(l => `<p>${l}</p>`).join('');
   }
 
   /* ===== 配图 ===== */
@@ -156,37 +150,35 @@ function renderPost() {
     floors.innerHTML = repliesHtml;
   }
 
-  /* ===== 下一篇导航（时间线正序；锁定下一章 → 提示） ===== */
+  /* ===== 下一篇导航（时间线正序；未恢复的隐藏帖 → 显示"未能恢复"卡） ===== */
   const nextEl = el('post-next');
   if (nextEl && S) {
     const nextId = S.nextOf(id);
     const next = nextId ? P[nextId] : null;
     if (next) {
-      if (S.canRead(nextId)) {
+      const nextLost = S.isHidden(nextId) && !S.isRead(nextId);
+      if (nextLost) {
+        nextEl.innerHTML = `
+          <div class="next-card next-locked">
+            <div class="next-label">下一篇 · ${next.date}</div>
+            <div class="next-title next-title-lost">〔数据未能恢复〕</div>
+            <div class="next-meta">归档登记号 #${nextId} · 索引损坏</div>
+            <div class="next-hint">本篇无法从归档中打开。也许某个旧帖里还留着它的痕迹——留心帖子末尾的"相关帖"。</div>
+          </div>`;
+      } else {
         nextEl.innerHTML = `
           <div class="next-card">
             <div class="next-label">下一篇 · ${next.date}</div>
             <a class="next-title" href="post.html?id=${nextId}">${next.title}</a>
-            <div class="next-meta">${next.authorName} · ${next.badge || '帖'}${next.content == null ? ' · 内容缺失' : ''}</div>
-          </div><div class="next-hint">读完本章所有帖子后，等级 +1</div>`;
-      } else {
-        nextEl.innerHTML = `
-          <div class="next-card next-locked">
-            <div class="next-label">下一篇 · ${next.date}</div>
-            <div class="next-title">${next.title}</div>
-            <div class="next-meta">🔒 需 Lv.${S.needLevel(nextId)} 可见 —— ${next.authorName}</div>
-            <div class="next-hint">把本章剩下的帖子读完（还差 ${unsolvedInChapter()} 篇），就能解锁。</div>
+            <div class="next-meta">${next.authorName} · ${next.badge || '帖'}</div>
           </div>`;
       }
     } else {
-      nextEl.innerHTML = `<div class="next-card next-end">—— 已是本章最后一篇 · 返回<a href="index.html">论坛存档</a> ——</div>`;
+      const lost = S.lostCount();
+      nextEl.innerHTML = `
+        <div class="next-card next-end">—— 已经是归档中最后一篇 · 返回<a href="index.html">论坛存档</a> ——</div>
+        ${lost > 0 ? `<div class="next-hint" style="text-align:center">归档中仍有 ${lost} 篇未能恢复。它们就藏在旧帖的"相关帖"里。</div>` : ''}`;
     }
-  }
-
-  function unsolvedInChapter() {
-    const chId = S.chapterOf(id);
-    const posts = S.chapterPosts(chId);
-    return posts.filter(([pid]) => !S.isRead(pid)).length;
   }
 
   /* ===== 回复流程（必然失败） ===== */
@@ -240,5 +232,5 @@ function renderPost() {
     });
   }
 
-  console.log('[帖子详情] post id=' + id + ' 已渲染 · 标记已读');
+  console.log('[帖子详情] post id=' + id + ' 已渲染');
 }

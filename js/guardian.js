@@ -50,7 +50,7 @@ if (postListEl) {
 const dynEl = document.getElementById('g-dyn-body');
 if (dynEl) {
   if (id === '1') {
-    // 彩蛋：旧合影（四人合照素材）—— 2016-12 早期聚会，藏在守夜人的相册里
+    // 彩蛋：旧合影（四人合照素材）+ 最后长文入口 —— 藏在守夜人的相册/动态里
     dynEl.innerHTML = `
       <div class="g-about">
         <h2 class="g-about-title">相册 · 2016</h2>
@@ -59,6 +59,14 @@ if (dynEl) {
           <div class="egg-album-cap" id="egg-cap">2016.12 · 我们四个人。第一次，也是唯一一次聚齐。</div>
         </div>
         <p class="g-about-body" style="margin-top:10px">相册里只有这一张照片。存档时间：2018-01-03，之后再无动静。</p>
+      </div>
+      <div class="g-about">
+        <h2 class="g-about-title">动态 · 2017-12-31</h2>
+        <p class="g-about-body">
+          <a class="post-ref" href="post.html?id=18&ref=g">相关帖：最后的最后一篇 —— 写给你们，也写给这些物件</a>
+          <br><br>
+          当晚他发文时在线。次日 0:01 下线。此后再无记录。
+        </p>
       </div>`;
     const photoEl = document.getElementById('egg-photo');
     if (photoEl && window.v98Popup) {

@@ -17,6 +17,8 @@
 }
 .acct-info { flex: 1; min-width: 0; }
 .acct-name { font-size: 20px; font-weight: 800; word-break: break-all; }
+.acct-nick-edit { font-size: 12px; color: #7fb0ff; cursor: pointer; font-weight: 400; }
+.acct-nick-edit:hover { text-decoration: underline; }
 .acct-badges { display: flex; gap: 8px; margin-top: 6px; align-items: center; }
 .acct-lv {
   background: linear-gradient(90deg, #7a5cd6, #5b6bff); color: #fff;
