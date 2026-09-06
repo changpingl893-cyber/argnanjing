@@ -8,22 +8,30 @@
 
   const body = document.getElementById('post-list-body');
   let rows = [];
+  // 主线帖（存帖目录列出的剧情关键帖）→ 列表带金色"精"标
+  const ELITE = new Set(['23', '1', '21', '22', '2', '4', '5', '6', '9', '10', '11', '12', '13', '14', '15', '16', '18', '19']);
 
   function currentSort() { return S.getSort(); }
 
   function render() {
     if (!body || !S) return;
     const mode = currentSort();
+    let list = S.allPosts(mode);
+    // 置顶帖永远在最上（置顶之间按日期倒序）
+    const pinned = list.filter(([, p]) => p.pinned).sort((a, b) => b[1].date.localeCompare(a[1].date));
+    const rest = list.filter(([, p]) => !p.pinned);
     let html = '';
 
-    S.allPosts(mode).forEach(([id, p]) => {
+    pinned.concat(rest).forEach(([id, p]) => {
       const st = S.statsOf(id);
       const badgeCls = p.deleted ? 'badge-dead' : (p.private ? 'badge-private' : (p.badgeClass || ''));
+      const eliteTag = ELITE.has(id) && !p.deleted ? '<span class="elite-tag">精</span>' : '';
       html += `
       <article class="post-row ${p.deleted ? 'post-row-dead' : ''}" data-post="${id}" data-cat="${p.cat || ''}" style="cursor:pointer">
         <div class="post-head">
           <span class="post-badge ${badgeCls}">${p.badge || '帖'}</span>
           <h2 class="post-title ${p.deleted ? 'post-title-deleted' : ''}">${p.title}</h2>
+          ${eliteTag}
         </div>
         <div class="post-foot">
           <span class="post-author">${p.authorName}</span>

@@ -74,6 +74,21 @@
 
 .floor-date { color: #bbb; font-size: 12px; margin-top: 10px; }
 
+/* 内容页 · 目录帖（存帖目录） */
+.toc-item { margin: 7px 0; font-size: 13px; line-height: 1.7; }
+.toc-date { color: #999; font-size: 12px; margin-right: 6px; }
+.toc-link { color: #1a6ff0; text-decoration: none; }
+.toc-link:hover { text-decoration: underline; }
+.toc-item a:hover { text-decoration: underline; }
+
+/* 精品标（主线帖） */
+.elite-tag {
+  display: inline-block; flex: 0 0 auto;
+  font-size: 11px; color: #7a5300; background: #ffe9b3;
+  border: 1px solid #f0d08a; border-radius: 3px;
+  padding: 0 5px; margin-left: 6px; line-height: 1.6;
+}
+
 /* 底部回复栏 */
 .post-reply-bar {
   position: fixed; bottom: 0; left: 0; right: 0;

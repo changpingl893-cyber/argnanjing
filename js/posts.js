@@ -513,6 +513,57 @@ const POSTS = {
     image: null,
     replies: [],
   },
+  '27': {
+    badge: '置顶', badgeClass: '', cat: '公告', chapter: 'c4',
+    pinned: true,
+    title: '【公告】本站存帖目录 · 写给后来的人',
+    authorId: '1', authorName: '守夜人',
+    date: '2017-12-31', ip: '江苏南京',
+    content: (
+      '2017 年的最后一天，我在整理这个站里的东西。\n\n' +
+      '这个站没有管理员了，我一个人守着它，守到今天。我把我们留下的帖子照年月都理了一遍。' +
+      '后来的人如果看到这里，不知道从哪看起，就照着这份目录看。每篇后面是我能说的话。\n\n' +
+      '<b>——— 二〇一六 · 他们把东西一样样抱了进来 ———</b>\n' +
+      '<div class="toc-item"><span class="toc-date">2016-02-28</span><a class="toc-link" href="post.html?id=23">《镇站之宝：霁蓝釉瓶》——我守着它：好物被糟蹋，从来不是它自己的错。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2016-03-19</span><a class="toc-link" href="post.html?id=1">《这里曾有一群想守住文物的人》——建站时的话：古时的物件，今日的守护。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2016-04-15</span><a class="toc-link" href="post.html?id=21">《青瓷查了三年的一只碗》——他话少，都在图里。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2016-05-08</span><a class="toc-link" href="post.html?id=22">《如意把它从中间人手里追回来》——那柄玉如意，是他跑了三趟劝回来的。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2016-05-20</span><a class="toc-link" href="post.html?id=24">《故纸堆的新人报道》——他来的那天，我们谁也不知道他是谁。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2016-06-02</span><a class="toc-link" href="post.html?id=2">《那只碗差一点就没了》——有人想出价。青瓷问我们该不该让它走。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2016-07-11</span><a class="toc-link" href="post.html?id=3">《彩釉大盘交流帖》——已设私密。想看他当年说过什么，去问管理员吧。管理员已经走了。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2016-08-20</span><a class="toc-link" href="post.html?id=25">《恒温柜申请 · 第二次被驳回》——长卷的记录，湿度数据都写在里面。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2016-10-18</span><a class="toc-link" href="post.html?id=4">《如意：有人出高价想请走那柄如意》——我们的受难，从这帖开始。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2016-12-29</span><a class="toc-link" href="post.html?id=20">《【相册】我们的2016》——已被删除。照片我留在自己的主页里了。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2016-12-31</span><a class="toc-link" href="post.html?id=5">《第一年，我们守住了三件》——那时我们还以为，可以一直守下去。</a></div>\n\n' +
+      '<b>——— 二〇一七 · 我们一件一件地失去 ———</b>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-02-20</span><a class="toc-link" href="post.html?id=6">《一卷山水，三次被拒的经费申请》</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-02-27</span><a class="toc-link" href="post.html?id=7">《过客：大家好，我想加入》</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-03-05</span><a class="toc-link" href="post.html?id=26">《那株梅花，我想守着它》——这一篇是我没想到的：有人比我们更认真。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-03-15</span><a class="toc-link" href="post.html?id=8">《青瓷：我从没想过炒作》</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-03-21</span><a class="toc-link" href="post.html?id=9">《我只是想让那只碗好好待着》——青瓷的最后一帖。之后他再没有上过线。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-05-20</span><a class="toc-link" href="post.html?id=10">《如意：我追到了中间人这条线》</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-07-16</span><a class="toc-link" href="post.html?id=11">《斗彩大盘不见了》——这是这一年的转折。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-07-25</span><a class="toc-link" href="post.html?id=12">《会员「故纸堆」已注销》</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-08-28</span><a class="toc-link" href="post.html?id=13">《如意：我好像知道是谁了》——这是他在站里的最后一句话。</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-09-02</span><a class="toc-link" href="post.html?id=14">《如意，你别吓我》</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-09-28</span><a class="toc-link" href="post.html?id=15">《长卷：我也该走了》</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-10-20</span><a class="toc-link" href="post.html?id=16">《过客：谢谢大家。有些事我没法说。》</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-11-05</span><a class="toc-link" href="post.html?id=17">《有青瓷的消息吗？》</a></div>\n' +
+      '<div class="toc-item"><span class="toc-date">2017-12-31</span><a class="toc-link" href="post.html?id=18">《写给你们，也写给这些物件》——我最后要说的话，都在里面了。</a></div>\n\n' +
+      '<b>——— 二〇一八 · 没有人了 ———</b>\n' +
+      '<div class="toc-item"><span class="toc-date">2018-06-30</span><a class="toc-link" href="post.html?id=19">《最后一条留言》</a></div>\n\n' +
+      '那些没有列出来的帖子，都是大家平时的谈话——不是不重要，是太重要了，所以我没法给它们排序。\n\n' +
+      '把这个站看完要很久。如果只看一遍，请照目录的顺序看。\n\n' +
+      '我给他们每个人，都在主页里留了话。\n\n' +
+      '——守夜人 · 2017 年 12 月 31 日'
+    ),
+    image: null,
+    replies: [
+      { authorId: '4', authorName: '长卷', text: '……整理得真细。保重。', date: '2017-12-31', ip: '安徽合肥' },
+      { authorId: '6', authorName: '过客', text: '谢谢您。我会照着看的。', date: '2017-12-31', ip: '四川成都' },
+      { authorId: '9', authorName: '匿名游客', text: '认认真真看完。辛苦了。', date: '2018-01-01', ip: '未知' },
+    ],
+  },
 };
 
 // 赞数 / 回复数（外部可见的论坛数据；列表展示用，回复楼层仅示示例）
@@ -544,6 +595,7 @@ const STATS = {
   '17': { likes: 0,    replies: 0 },     // 求助帖 · 无人回应
   '18': { likes: 3,    replies: 0 },     // 最后的长文 · 只有三个赞，没有回复
   '19': { likes: 0,    replies: 0 },     // 最后一条留言 · 无人
+  '27': { likes: 7,    replies: 3 },     // 存帖目录（置顶）
 };
 window.STATS = STATS;
 
