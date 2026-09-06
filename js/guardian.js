@@ -63,7 +63,7 @@ if (dynEl) {
       <div class="g-about">
         <h2 class="g-about-title">动态 · 2017-12-31</h2>
         <p class="g-about-body">
-          <a class="post-ref" href="post.html?id=18&ref=g">相关帖：最后的最后一篇 —— 写给你们，也写给这些物件</a>
+          <a class="post-ref" href="post.html?id=18">相关帖：最后的最后一篇 —— 写给你们，也写给这些物件</a>
           <br><br>
           当晚他发文时在线。次日 0:01 下线。此后再无记录。
         </p>

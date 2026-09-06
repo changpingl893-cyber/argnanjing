@@ -54,24 +54,22 @@ const POSTS = {
     ],
   },
   '3': {
-    badge: '交流', badgeClass: 'badge-purple', cat: '线索', chapter: 'c1',
+    badge: '私密', badgeClass: 'badge-private', cat: '线索', chapter: 'c1',
+    private: true,
     title: '【交流】最近有人问我一件彩釉大盘，据说底款少见……',
     authorId: '5', authorName: '故纸堆',
     date: '2016-07-11', ip: '河南洛阳',
-    content: (
-      '一个朋友的朋友，说手里有件彩釉大盘，底款年纪看着不小。拍了照发我，让我们站里懂行的给掌掌眼。\n\n' +
-      '我先说下我的看法：盘心是斗彩缠枝莲，釉面温润，口沿有一处老窑裂，像是明中期的东西。' +
-      '要真是那个年份，品相又完整——那是能进博物馆的一级品，了不得。\n\n' +
-      '各位老师怎么看？我也就是个看热闹的，别让我说外行话，哈哈。'
-    ),
-    image: 'images/doucai-plate.jpg',
-    replies: [
-      { authorId: '1', authorName: '守夜人', text: '底款照片呢？光说没用，发上来看看。', date: '2016-07-11', ip: '江苏南京' },
-      { authorId: '3', authorName: '如意', text: '明中期的斗彩大盘？楼主，这种东西黑市上都是天价。你朋友的朋友，是什么来路？', date: '2016-07-12', ip: '北京' },
-      { authorId: '2', authorName: '青瓷', text: '看着像真东西。不过越是好物，越要问清楚来历——来历不明的，看一眼都是罪过。', date: '2016-07-12', ip: '浙江杭州' },
-      { authorId: '4', authorName: '长卷', text: '要真是那位朋友要出手，劝一句：别卖。好物不该再流到黑市上。', date: '2016-07-13', ip: '安徽合肥' },
-      { authorId: '5', authorName: '故纸堆', text: '哈哈我就是转句话，别都盯着我。人家就是问问行情，真卖不卖的也轮不到我操心。', date: '2016-07-13', ip: '河南洛阳' },
-    ],
+    content: null,
+    replies: [],
+  },
+  '20': {
+    badge: '已删除', badgeClass: 'badge-dead', cat: '记录', chapter: 'c1',
+    deleted: true,
+    title: '【相册】我们的 2016',
+    authorId: '2', authorName: '青瓷',
+    date: '2016-12-29', ip: '浙江杭州',
+    content: null,
+    replies: [],
   },
   '4': {
     badge: '警惕', badgeClass: 'badge-purple', cat: '线索', chapter: 'c1',
@@ -127,7 +125,7 @@ const POSTS = {
       '三年，我写了三次申请，想给这卷画做一个恒温的柜子。三次都被驳回了。' +
       '上面说，这是"重理轻文"的时代，钱要花在更"重要"的地方。\n\n' +
       '我没什么好说的，只是替这卷画不平。它不该因为看的人少，就不配被好好保存。\n\n' +
-      '<a class="post-ref" href="post.html?id=15&ref=6">相关帖：申请被拒了三次。我也该走了。</a>'
+      '<a class="post-ref" href="post.html?id=15">相关帖：申请被拒了三次。我也该走了。</a>'
     ),
     image: 'images/landscape.jpg',
     replies: [
@@ -169,7 +167,7 @@ const POSTS = {
       '当时只是知道有人出价，心里慌，想问问大家该不该让它走。后来我决定不走了——' +
       '这件事，从开始到现在都没有变过。\n\n' +
       '信的人自然会信。不信的，我写一万句也没用。\n\n' +
-      '<a class="post-ref" href="post.html?id=9&ref=8">相关帖：我只是想让那只碗好好待着</a>'
+      '<a class="post-ref" href="post.html?id=9">相关帖：我只是想让那只碗好好待着</a>'
     ),
     image: null,
     replies: [
@@ -183,7 +181,6 @@ const POSTS = {
   },
   '9': {
     badge: '心碎', badgeClass: 'badge-purple', cat: '求助', chapter: 'c2',
-    hidden: true,
     title: '我只是想让那只碗好好待着',
     authorId: '2', authorName: '青瓷',
     date: '2017-03-21', ip: '浙江杭州',
@@ -194,7 +191,7 @@ const POSTS = {
       '我是不是真的还能看着它。\n\n' +
       '我只是想让那只碗好好待着。就这一件事。\n\n' +
       '就这一件事。\n\n' +
-      '<a class="post-ref" href="post.html?id=17&ref=9">相关帖：有青瓷的消息吗？</a>'
+      '<a class="post-ref" href="post.html?id=17">相关帖：有青瓷的消息吗？</a>'
     ),
     image: null,
     replies: [
@@ -218,7 +215,7 @@ const POSTS = {
       '有人在我们站里盯着，把东西一件一件报出去。\n\n' +
       '我手上已经有一个名单，几个 ID。还差最后一步：对一下时间，是谁最先提的那大盘。\n\n' +
       '大家别问我是谁，查清了我会发帖。查不清——咱们都把东西看紧点，别轻易示人。\n\n' +
-      '<a class="post-ref" href="post.html?id=13&ref=10">相关帖：我好像知道是谁了……明天再说。</a>'
+      '<a class="post-ref" href="post.html?id=13">相关帖：我好像知道是谁了……明天再说。</a>'
     ),
     image: null,
     replies: [
@@ -270,7 +267,6 @@ const POSTS = {
   },
   '13': {
     badge: '线索', badgeClass: 'badge-purple', cat: '线索', chapter: 'c3',
-    hidden: true,
     title: '我好像知道是谁了……明天再说。',
     authorId: '3', authorName: '如意',
     date: '2017-08-28', ip: '北京',
@@ -307,7 +303,6 @@ const POSTS = {
   },
   '15': {
     badge: '离开', badgeClass: 'badge-green', cat: '记录', chapter: 'c3',
-    hidden: true,
     title: '申请被拒了三次。我也该走了。',
     authorId: '4', authorName: '长卷',
     date: '2017-09-28', ip: '安徽合肥',
@@ -348,7 +343,6 @@ const POSTS = {
   },
   '17': {
     badge: '求助', badgeClass: 'badge-orange', cat: '求助', chapter: 'c4',
-    hidden: true,
     title: '【求助】有青瓷的消息吗？',
     authorId: '9', authorName: '匿名游客',
     date: '2017-11-05', ip: '未知',
@@ -357,14 +351,13 @@ const POSTS = {
       '他 3 月 21 日之后再没登录过。我知道他住在杭州，也替他查过一些事——' +
       '我只是想确认他至少还好好的。\n\n' +
       '如果谁有消息，请回我。拜托了。\n\n' +
-      '<a class="post-ref" href="post.html?id=19&ref=17">相关帖：最后一条留言 · 2018-06-30</a>'
+      '<a class="post-ref" href="post.html?id=19">相关帖：最后一条留言 · 2018-06-30</a>'
     ),
     image: null,
     replies: [],
   },
   '18': {
     badge: '置顶', badgeClass: '', cat: '公告', chapter: 'c4',
-    hidden: true,
     title: '【最后的长文】写给你们，也写给这些物件',
     authorId: '1', authorName: '守夜人',
     date: '2017-12-31', ip: '江苏南京',
@@ -395,7 +388,6 @@ const POSTS = {
   /* ============ 章五 · 遗响 2018 ============ */
   '19': {
     badge: '遗留', badgeClass: 'badge-purple', cat: '记录', chapter: 'c5',
-    hidden: true,
     title: '【留言板】最后一条留言 · 2018-06-30',
     authorId: '9', authorName: '匿名游客',
     date: '2018-06-30', ip: '未知',

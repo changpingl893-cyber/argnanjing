@@ -187,6 +187,19 @@ body {
 }
 .post-ref:hover { background: #e2ecff; color: #1a6ff0; }
 
+/* ===== 已删除 / 私密 徽章与标记 ===== */
+.post-badge.badge-dead { background: #eceff3; color: #9aa2ad; }
+.post-badge.badge-private { background: #f0e8fd; color: #7c4dff; }
+.post-title-deleted { color: #9c9c9c !important; text-decoration: line-through; }
+.dead-chip {
+  font-size: 11px; color: #9aa2ad; background: #f2f4f7;
+  border-radius: 3px; padding: 1px 8px;
+}
+.private-chip {
+  font-size: 11px; color: #7c4dff; background: #f3edfd;
+  border-radius: 3px; padding: 1px 8px;
+}
+
 /* 关注按钮状态 */
 .follow-btn.followed { background: #c3ceed; }
 

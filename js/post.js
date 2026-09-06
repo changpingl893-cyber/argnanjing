@@ -1,10 +1,10 @@
 // 帖子详情页逻辑
-// 隐藏帖（索引损坏）规则：未经"相关帖"链接（?id=X&ref=来源）进入的，一律提示"数据未能恢复"；
-// 从相关帖链接进入 → 允许阅读并标记恢复，此后主页正常显示。
+// 全部帖子直接可读。两类特殊帖仅改变内容呈现：
+//   - deleted：内容区显示"该帖已被删除"
+//   - private：内容区显示"内容已转移至未公开区"
 
 const params = new URLSearchParams(location.search);
 const id = params.get('id') || '1';
-const fromRef = params.get('ref');          // 来源帖 id（相关帖链接携带）
 const AUTH = window.AUTHORS || {};
 const P = window.POSTS || {};
 const S = window.Story;
@@ -30,60 +30,12 @@ function avatarHtml(a) {
   return a.name.charAt(0);
 }
 
-/* ===== 可读性判定 ===== */
-const isHidden = S.isHidden(id);
-const canOpen = !isHidden || S.isRead(id) || !!fromRef;
-
-if (!canOpen) {
-  renderUnavailable();
-} else {
-  renderPost();
-  if (isHidden && !S.isRead(id)) {
-    // 从相关帖恢复：标记已读（此后主页显示）
-    S.markRead(id);
-  }
-}
-
-/* 未恢复的隐藏帖：数据未能恢复提示页（不暴露真实标题） */
-function renderUnavailable() {
-  const floorOp = el('floor-op');
-  if (floorOp) floorOp.style.display = 'none';
-  setText('post-title', '〔数据未能恢复 · 归档登记号 #' + id + '〕');
-  const badge = el('post-badge');
-  if (badge) badge.textContent = '损坏';
-
-  const floors = el('floors');
-  if (floors) {
-    floors.innerHTML = `
-      <div class="floor">
-        <div class="floor-body">
-          <div class="v98-msg" style="display:flex;gap:12px;align-items:flex-start">
-            <div class="v98-icon error">✕</div>
-            <div class="v98-text" style="white-space:normal">
-              <b>数据未能恢复（0x80004005）。</b><br><br>
-              该帖的归档索引已损坏，无法从论坛列表直接打开。<br><br>
-              这个站从 2018 年起就没人维护了。损坏的帖子在列表里只剩一个登记号
-              （#${id}）——它们不是被删了，是从没被保存下来。<br><br>
-              也许，某个仍然完好的旧帖里还留着它的痕迹。
-            </div>
-          </div>
-          <div class="v98-btns">
-            <button class="v98-btn" onclick="location.href='index.html'">返回论坛</button>
-          </div>
-        </div>
-      </div>`;
-  }
-  const replyBtn = el('reply-btn');
-  if (replyBtn) replyBtn.style.display = 'none';
-  console.log('[帖子详情] 索引损坏不可恢复：' + id);
-}
+renderPost();
+if (S) S.markRead(id);
 
 function renderPost() {
-  /* ===== 恢复正常显示后：标记已读 ===== */
-  if (S && !S.isRead(id)) S.markRead(id);
-
   /* ===== 帖子头 ===== */
-  if (el('post-badge')) { el('post-badge').textContent = post.badge || ''; el('post-badge').className = 'post-cat-badge ' + (post.badgeClass || ''); }
+  if (el('post-badge')) { el('post-badge').textContent = post.badge || ''; el('post-badge').className = 'post-cat-badge ' + (post.badgeClass || (post.deleted ? 'badge-dead' : (post.private ? 'badge-private' : ''))); }
   setText('post-title', post.title || '帖子标题');
 
   const lastReply = (post.replies && post.replies.length) ? post.replies[post.replies.length - 1].date : post.date;
@@ -108,23 +60,48 @@ function renderPost() {
     }
   }
 
-  /* ===== 正文 ===== */
+  /* ===== 正文（已删除 / 私密 → 特殊提示） ===== */
   const contentEl = el('op-content');
   if (contentEl) {
-    contentEl.innerHTML = post.content.split('\n').map(l => `<p>${l}</p>`).join('');
+    if (post.deleted) {
+      contentEl.innerHTML = `
+        <div class="v98-msg" style="display:flex;gap:12px;align-items:flex-start">
+          <div class="v98-icon error">✕</div>
+          <div class="v98-text" style="white-space:normal">
+            <b>该帖已被删除。</b><br><br>
+            删除时间：2017-01-15 · 操作：管理员（站内排查）<br><br>
+            这个站从 2018 年起就没有人维护了，被删除的帖子从此无法恢复。
+            <span style="color:#999;font-size:12px;display:block;margin-top:8px">（原帖：青瓷 · 2016-12-29 · 《我们的 2016》，含合影与聚会记录）</span>
+          </div>
+        </div>`;
+    } else if (post.private) {
+      contentEl.innerHTML = `
+        <div class="v98-msg" style="display:flex;gap:12px;align-items:flex-start">
+          <div class="v98-icon info">i</div>
+          <div class="v98-text" style="white-space:normal">
+            <b>该帖内容已转移至站内"未公开区"。</b><br><br>
+            2017-07-25 应登记者要求处理：其账号注销后，发布内容不再对外展示。<br><br>
+            <span style="color:#999;font-size:12px">（标题仍保留：分类归档、登记号可见）</span>
+          </div>
+        </div>`;
+    } else {
+      contentEl.innerHTML = post.content.split('\n').map(l => `<p>${l}</p>`).join('');
+    }
   }
 
-  /* ===== 配图 ===== */
-  if (post.image && el('op-image')) {
+  /* ===== 配图（私密/删除帖不显示图） ===== */
+  if ((post.deleted || post.private) && el('op-image')) {
+    el('op-image').style.display = 'none';
+  } else if (post.image && el('op-image')) {
     el('op-image').src = post.image;
     el('op-image').style.display = 'block';
   } else if (el('op-image')) {
     el('op-image').style.display = 'none';
   }
 
-  /* ===== 回复楼层 ===== */
+  /* ===== 回复楼层（删除/私密帖无回复） ===== */
   const floors = el('floors');
-  if (floors && post.replies) {
+  if (floors && post.replies && !post.deleted && !post.private) {
     const repliesHtml = post.replies.map((r, i) => {
       const ra0 = authorOf(r.authorId);
       const ra = Object.assign({}, ra0, { name: r.authorName || ra0.name });
@@ -150,40 +127,26 @@ function renderPost() {
     floors.innerHTML = repliesHtml;
   }
 
-  /* ===== 下一篇导航（时间线正序；未恢复的隐藏帖 → 显示"未能恢复"卡） ===== */
+  /* ===== 下一篇导航（时间线正序） ===== */
   const nextEl = el('post-next');
   if (nextEl && S) {
     const nextId = S.nextOf(id);
     const next = nextId ? P[nextId] : null;
     if (next) {
-      const nextLost = S.isHidden(nextId) && !S.isRead(nextId);
-      if (nextLost) {
-        nextEl.innerHTML = `
-          <div class="next-card next-locked">
-            <div class="next-label">下一篇 · ${next.date}</div>
-            <div class="next-title next-title-lost">〔数据未能恢复〕</div>
-            <div class="next-meta">归档登记号 #${nextId} · 索引损坏</div>
-            <div class="next-hint">本篇无法从归档中打开。也许某个旧帖里还留着它的痕迹——留心帖子末尾的"相关帖"。</div>
-          </div>`;
-      } else {
-        nextEl.innerHTML = `
-          <div class="next-card">
-            <div class="next-label">下一篇 · ${next.date}</div>
-            <a class="next-title" href="post.html?id=${nextId}">${next.title}</a>
-            <div class="next-meta">${next.authorName} · ${next.badge || '帖'}</div>
-          </div>`;
-      }
-    } else {
-      const lost = S.lostCount();
       nextEl.innerHTML = `
-        <div class="next-card next-end">—— 已经是归档中最后一篇 · 返回<a href="index.html">论坛存档</a> ——</div>
-        ${lost > 0 ? `<div class="next-hint" style="text-align:center">归档中仍有 ${lost} 篇未能恢复。它们就藏在旧帖的"相关帖"里。</div>` : ''}`;
+        <div class="next-card">
+          <div class="next-label">下一篇 · ${next.date}</div>
+          <a class="next-title" href="post.html?id=${nextId}">${next.title}</a>
+          <div class="next-meta">${next.authorName} · ${next.badge || '帖'}</div>
+        </div>`;
+    } else {
+      nextEl.innerHTML = `<div class="next-card next-end">—— 已经是归档中最后一篇 · 返回<a href="index.html">论坛存档</a> ——</div>`;
     }
   }
 
   /* ===== 回复流程（必然失败） ===== */
   const replyBtn = el('reply-btn');
-  if (replyBtn && window.v98Popup) {
+  if (replyBtn && window.v98Popup && !post.deleted && !post.private) {
     replyBtn.addEventListener('click', () => {
       const ta = document.createElement('textarea');
       ta.className = 'v98-input';
@@ -230,6 +193,8 @@ function renderPost() {
         }, 1100);
       });
     });
+  } else if (replyBtn) {
+    replyBtn.style.display = 'none';
   }
 
   console.log('[帖子详情] post id=' + id + ' 已渲染');

@@ -1,5 +1,5 @@
 // 我的归档（账号页）
-// 无等级无注册门槛：展示恢复进度 / 章节完成度 / 阅读记录 /（全读完后的）彩蛋指引
+// 无锁定无门槛：展示阅读进度 / 章节完成度 / 阅读记录 /（全读完后的）彩蛋指引
 // 网名可选，仅作装饰（本机保存）
 
 (function () {
@@ -10,18 +10,16 @@
 
   function render() {
     const total = S.totalCount();
-    const recovered = Object.keys(P).filter(id => S.isRestored(id)).length;
+    const readCount = S.readList().length;
 
-    /* 收藏卡 */
+    /* 归档卡 */
     setText('acct-avatar', S.getNick() ? S.getNick().charAt(0) : '访');
     setText('acct-name', S.getNick() || '访客');
-    setText('acct-recovered', '已恢复 ' + recovered + '/' + total);
-    document.getElementById('acct-bar-fill').style.width = (recovered / total * 100) + '%';
-    const lost = S.lostCount();
+    setText('acct-recovered', '已读 ' + readCount + '/' + total);
+    document.getElementById('acct-bar-fill').style.width = (readCount / total * 100) + '%';
     setText('acct-progress-text',
-      lost > 0
-        ? '归档中仍有 ' + lost + ' 篇未能恢复。它们不会出现在列表里——旧帖末尾的"相关帖"里，也许还有它们的痕迹。'
-        : '归档已全部恢复。谢谢你来过。');
+      S.completed() ? '全部读完。谢谢你来过。'
+        : '按时间线从最早的帖子读起即可。其中两帖已被删除/设为私密，只留下标题。');
 
     /* 章节进度 */
     const chEl = document.getElementById('acct-chapters');
@@ -36,18 +34,16 @@
         <div class="acct-chap-head">
           <span class="acct-chap-period">${ch.period}</span>
           <b class="acct-chap-name">${ch.name}</b>
-          <span class="acct-chap-status">${finished ? '✅ 全部读毕 ' + done + '/' + totalC : '已恢复 ' + done + '/' + totalC}</span>
+          <span class="acct-chap-status">${finished ? '✅ 全部读毕 ' + done + '/' + totalC : done + '/' + totalC}</span>
         </div>
         <p class="acct-chap-desc">${ch.desc}</p>
         <div class="acct-chap-posts">
           ${posts.map(([pid, p]) => {
             const read = S.isRead(pid);
-            const visible = S.isRestored(pid);
-            const icon = read ? '✓' : (visible ? '○' : '◆');
-            const link = visible ? `href="post.html?id=${pid}"` : '';
-            const cls = read ? 'read' : (visible ? 'unread' : 'still-locked');
-            const label = visible ? `${p.date} · ${p.title}` : `${p.date} · （未能恢复）`;
-            return `<a class="acct-post ${cls}" ${link}>${icon} ${label}</a>`;
+            const icon = read ? '✓' : '○';
+            const cls = read ? 'read' : 'unread';
+            const tag = p.deleted ? '（已删除）' : (p.private ? '（私密）' : '');
+            return `<a class="acct-post ${cls}" href="post.html?id=${pid}">${icon} ${p.date} · ${p.title} ${tag}</a>`;
           }).join('')}
         </div>
       </div>`;

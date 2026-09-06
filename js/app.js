@@ -1,12 +1,13 @@
 // 古时今日 · 论坛主站交互 + 归档渲染
-// 帖子列表按时间正序；损坏索引用"〔数据未能恢复〕"残迹占位，点击无内容；
-// 未恢复的隐藏帖不出现在列表里，只能通过旧帖中的"相关帖"链接找到（读到即恢复）。
+// 全部帖子直接可见可读（无锁定、无门槛）；只有两类特殊帖子：
+//   - 已删除：列表可见（灰色徽章），点进去是"该帖已被删除"
+//   - 私密：列表可见（粉紫徽章），点进去是"内容已转移至未公开区"
+// 帖子正文中的"相关帖"链接为纯跳转（无访问控制）。
 
 (function () {
   const P = window.POSTS || {};
   const S = window.Story;
 
-  /* ===== 渲染帖子列表（章节分组 + 残迹占位） ===== */
   const body = document.getElementById('post-list-body');
   let rows = [];
 
@@ -18,46 +19,32 @@
       const posts = S.chapterPosts(ch.id); // [[id, post], ...]
       if (!posts.length) return;
       const total = posts.length;
-      const restored = posts.filter(([id]) => S.isRestored(id)).length;
+      const done = posts.filter(([id]) => S.isRead(id)).length;
 
       html += `
       <div class="chapter-head">
         <span class="chapter-index">第 ${['c1','c2','c3','c4','c5'].indexOf(ch.id) + 1} 章</span>
         <b class="chapter-name">${ch.name} · ${ch.period}</b>
-        <span class="chapter-progress">已恢复 ${restored}/${total}</span>
+        <span class="chapter-progress">${done}/${total}</span>
         <span class="chapter-desc">${ch.desc}</span>
       </div>`;
 
       posts.forEach(([id, p]) => {
-        if (S.isRestored(id)) {
-          html += `
-          <article class="post-row" data-post="${id}" data-cat="${p.cat || ''}" style="cursor:pointer">
-            <div class="post-head">
-              <span class="post-badge ${p.badgeClass || ''}">${p.badge || '帖'}</span>
-              <h2 class="post-title">${p.title}</h2>
-            </div>
-            <div class="post-foot">
-              <span class="post-author">${p.authorName}</span>
-              <span class="post-date">${p.date}</span>
-              <span class="post-replies">回复 ${(p.replies || []).length}</span>
-              ${S.isHidden(id) ? '<span class="recovered-chip">已恢复</span>' : ''}
-            </div>
-          </article>`;
-        } else {
-          // 损坏索引残迹：点不开，提示去帖子里找线索
-          html += `
-          <article class="post-row post-row-lost" data-cat="${p.cat || ''}">
-            <div class="post-head">
-              <span class="post-badge post-badge-lock">◆</span>
-              <h2 class="post-title post-title-lost">〔数据未能恢复 · 索引损坏〕</h2>
-            </div>
-            <div class="post-foot">
-              <span class="post-date">${p.date}</span>
-              <span class="post-replies">归档登记号 #${id}</span>
-              <span class="lost-hint">旧帖里也许还有它的痕迹</span>
-            </div>
-          </article>`;
-        }
+        const badgeCls = p.deleted ? 'badge-dead' : (p.private ? 'badge-private' : (p.badgeClass || ''));
+        html += `
+        <article class="post-row ${p.deleted ? 'post-row-dead' : ''}" data-post="${id}" data-cat="${p.cat || ''}" style="cursor:pointer">
+          <div class="post-head">
+            <span class="post-badge ${badgeCls}">${p.badge || '帖'}</span>
+            <h2 class="post-title ${p.deleted ? 'post-title-deleted' : ''}">${p.title}</h2>
+          </div>
+          <div class="post-foot">
+            <span class="post-author">${p.authorName}</span>
+            <span class="post-date">${p.date}</span>
+            <span class="post-replies">回复 ${(p.replies || []).length}</span>
+            ${p.deleted ? '<span class="dead-chip">此帖已被删除</span>' : ''}
+            ${p.private ? '<span class="private-chip">内容已转移</span>' : ''}
+          </div>
+        </article>`;
       });
     });
 
@@ -66,7 +53,6 @@
     bindRows();
   }
 
-  /* ===== 行交互 ===== */
   function bindRows() {
     body.querySelectorAll('.post-row[data-post]').forEach(el => {
       el.addEventListener('click', (e) => {
@@ -74,29 +60,6 @@
         location.href = 'post.html?id=' + el.getAttribute('data-post');
       });
     });
-    // 残迹行：点击给个破旧感提示（引导去帖里找）
-    body.querySelectorAll('.post-row-lost').forEach(el => {
-      el.style.cursor = 'not-allowed';
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (window.v98Popup) {
-          v98Popup({
-            title: '数据未能恢复 (0x80004005)',
-            icon: 'warn',
-            text: '该帖的索引已损坏，无法从归档中直接打开。\n\n' +
-                  '这个站从 2018 年起就没有人维护了——损坏的帖子只剩下登记号。\n' +
-                  '也许，某个仍然完好的旧帖里还留着它的痕迹（相关帖链接）。\n\n' +
-                  '当前已恢复：' + recoveredNow() + ' / ' + S.totalCount(),
-            buttons: [{ label: '去翻帖', primary: true, onClick: (btn, api) => { api.close(); const t = document.querySelector('.board-section'); if (t) t.scrollIntoView({ behavior: 'smooth' }); } },
-                      { label: '知道了', onClick: null }]
-          });
-        }
-      });
-    });
-  }
-
-  function recoveredNow() {
-    return Object.keys(P).filter(id => S.isRestored(id)).length;
   }
 
   /* ===== 搜索过滤 ===== */
@@ -180,5 +143,5 @@
 
   /* ===== 启动 ===== */
   render();
-  console.log('[古时今日] 论坛主站已加载 · 已恢复 ' + recoveredNow() + '/' + S.totalCount());
+  console.log('[古时今日] 论坛主站已加载 · 共 ' + S.totalCount() + ' 帖');
 })();

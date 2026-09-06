@@ -1,7 +1,6 @@
-// 古时今日 · 归档 / 恢复系统
-// 设定：网站 2018 年停更后年久失修，部分帖子的归档索引已损坏——
-// 它们不会出现在论坛列表里，只能通过旧帖里残留的"相关帖"链接找到（读过即恢复，此后正常显示）。
-// 无等级、无注册门槛；进度只记录在本机（localStorage）。
+// 古时今日 · 阅读记录（无锁定、无门槛：进站即读全部帖子）
+// 保留：章节分组、已读标记（驱动"我的归档"与彩蛋指引）、下一篇导航。
+// 特殊帖子（已删除/私密）只是内容展示形态，不影响可访问性。
 
 (function () {
   const KEY = 'gushijinri.progress.v2';
@@ -38,7 +37,7 @@
     getNick() { return state().nick || ''; },
     setNick(n) { const s = state(); s.nick = n; save(s); },
 
-    /* ------ 阅读 / 恢复 ------ */
+    /* ------ 阅读记录 ------ */
     isRead(id) { return state().read.includes(String(id)); },
     markRead(id) {
       const s = state();
@@ -46,18 +45,6 @@
       if (!s.read.includes(i)) { s.read.push(i); save(s); }
     },
     readList() { return state().read.slice(); },
-
-    /* ------ 帖子可见性 ------ */
-    isHidden(id) {
-      const p = (window.POSTS || {})[id];
-      return !!(p && p.hidden);
-    },
-    // 归档列表是否显示该帖（隐藏帖在恢复前不显示，只留残迹）
-    isRestored(id) { return !api.isHidden(id) || api.isRead(id); },
-    lostCount() {
-      const P = window.POSTS || {};
-      return Object.keys(P).filter(id => api.isHidden(id) && !api.isRead(id)).length;
-    },
     totalCount() { return Object.keys(window.POSTS || {}).length; },
 
     /* ------ 章节 ------ */
@@ -76,18 +63,12 @@
       });
     },
 
-    /* ------ 下一篇（时间线正序；隐藏帖未恢复 → 返回 null + 由页面显示"未能恢复"） ------ */
+    /* ------ 下一篇（时间线正序） ------ */
     nextOf(id) {
       const P = window.POSTS || {};
       const ids = Object.keys(P).sort((a, b) => P[a].date.localeCompare(P[b].date));
       const i = ids.indexOf(String(id));
       return i >= 0 && i < ids.length - 1 ? ids[i + 1] : null;
-    },
-    prevOf(id) {
-      const P = window.POSTS || {};
-      const ids = Object.keys(P).sort((a, b) => P[a].date.localeCompare(P[b].date));
-      const i = ids.indexOf(String(id));
-      return i > 0 ? ids[i - 1] : null;
     },
   };
 
