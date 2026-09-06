@@ -1,5 +1,5 @@
-// 我的归档（账号页）
-// 全部帖子一览（按时间排序，正/倒均可）、阅读记录、全读完后的彩蛋指引；网名可选。
+// 个人主页：全部帖子一览 / 浏览记录 /（全读完后的）彩蛋指引；网名可选
+// 去掉游戏化元素：无进度条、无"已恢复"计数，用普通个人主页的表述。
 
 (function () {
   const S = window.Story;
@@ -10,35 +10,32 @@
   function render() {
     const total = S.totalCount();
     const readCount = S.readList().length;
-    const mode = S.getSort();
 
-    /* 归档卡 */
+    /* 个人卡 */
     setText('acct-avatar', S.getNick() ? S.getNick().charAt(0) : '访');
     setText('acct-name', S.getNick() || '访客');
-    setText('acct-recovered', '已读 ' + readCount + '/' + total);
-    document.getElementById('acct-bar-fill').style.width = (readCount / total * 100) + '%';
+    setText('acct-recovered', '浏览 ' + readCount + ' / ' + total);
     setText('acct-progress-text',
-      S.completed() ? '全部读完。谢谢你来过。'
-        : '按时间顺序读即可。其中两帖已被删除/设为私密，只留下标题。');
+      S.completed() ? '全部看完。' : '注册模块还在运行——它是这个站唯一还在工作的东西。');
 
     /* 全部帖子一览 */
     const chEl = document.getElementById('acct-chapters');
-    let html = '<div class="acct-chapter">';
-    S.allPosts(mode === 'desc').forEach(([pid, p]) => {
+    let html = '<div class="acct-chapter"><div class="acct-chap-posts">';
+    S.allPosts().forEach(([pid, p]) => {
       const read = S.isRead(pid);
-      const icon = read ? '✓' : '○';
+      const icon = read ? '✓' : '·';
       const cls = read ? 'read' : 'unread';
       const tag = p.deleted ? '（已删除）' : (p.private ? '（私密）' : '');
       html += `<a class="acct-post ${cls}" href="post.html?id=${pid}">${icon} ${p.date} · ${p.title} ${tag}</a>`;
     });
-    html += '</div>';
+    html += '</div></div>';
     chEl.innerHTML = html;
 
-    /* 阅读记录（最近在前的已读帖子） */
+    /* 浏览记录（最近在前） */
     const rlEl = document.getElementById('acct-readlist');
     const readList = S.readList().slice().reverse();
     if (!readList.length) {
-      rlEl.innerHTML = '<p class="acct-empty">还没有阅读记录。<a href="post.html?id=23">从最早的帖子开始 →</a></p>';
+      rlEl.innerHTML = '<p class="acct-empty">还没有浏览记录。</p>';
     } else {
       rlEl.innerHTML = readList.map(pid => {
         const p = P[pid];
@@ -49,7 +46,7 @@
       }).join('');
     }
 
-    /* 彩蛋指引（只有全部读完才出现） */
+    /* 彩蛋指引（全部读完才出现） */
     if (S.completed()) {
       document.getElementById('acct-egg').style.display = '';
     }

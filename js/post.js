@@ -41,7 +41,7 @@ function renderPost() {
   const lastReply = (post.replies && post.replies.length) ? post.replies[post.replies.length - 1].date : post.date;
   const lockNote = el('post-lock-note');
   if (lockNote && lastReply) {
-    lockNote.textContent = `本贴最后回复于 ${lastReply} · 管理人员已于 2018 年 1 月离任，帖子自动锁定`;
+    lockNote.textContent = `本贴最后回复于 ${lastReply} · 本帖已锁定，不再接受回复`;
     lockNote.style.display = 'block';
   }
 

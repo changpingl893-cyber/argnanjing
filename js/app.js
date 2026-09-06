@@ -49,16 +49,16 @@
     });
   }
 
-  /* ===== 排序切换 ===== */
+  /* ===== 排序切换（最早 / 最新） ===== */
   const ascBtn = document.getElementById('sort-asc');
   const descBtn = document.getElementById('sort-desc');
   function updateSortBtns() {
     const cur = currentSort();
-    if (ascBtn) ascBtn.className = 'sort-btn' + (cur === 'asc' ? ' active' : '');
-    if (descBtn) descBtn.className = 'sort-btn' + (cur === 'desc' ? ' active' : '');
+    if (ascBtn) ascBtn.className = 'sort-link' + (cur === 'asc' ? ' active' : '');
+    if (descBtn) descBtn.className = 'sort-link' + (cur === 'desc' ? ' active' : '');
   }
-  if (ascBtn) ascBtn.addEventListener('click', () => { S.setSort('asc'); render(); });
-  if (descBtn) descBtn.addEventListener('click', () => { S.setSort('desc'); render(); });
+  if (ascBtn) ascBtn.addEventListener('click', (e) => { e.preventDefault(); S.setSort('asc'); render(); });
+  if (descBtn) descBtn.addEventListener('click', (e) => { e.preventDefault(); S.setSort('desc'); render(); });
 
   /* ===== 搜索过滤 ===== */
   const searchInput = document.querySelector('.search-input');

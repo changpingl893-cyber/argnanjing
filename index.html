@@ -9,8 +9,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>古时今日 · 论坛</title>
-<link rel="stylesheet" href="css/style.css?v=20260906">
-<link rel="stylesheet" href="css/vintage.css?v=20260906">
+<link rel="stylesheet" href="css/style.css?v=20260907">
+<link rel="stylesheet" href="css/vintage.css?v=20260907">
 </head>
 <body>
 
@@ -24,6 +24,7 @@
     <input class="search-input" type="search" placeholder="搜索帖子 / 线索…">
     <button class="search-btn">搜索</button>
   </div>
+  <a class="header-link" href="account.html">我的</a>
 </header>
 
 <!-- 论坛横幅大图 -->
@@ -52,7 +53,7 @@
 
 <!-- 导航 tab（按版块过滤，过滤在已渲染列表上做） -->
 <nav class="forum-tabs">
-  <a class="tab active" href="#" data-cat="all">当前版面</a>
+  <a class="tab active" href="#" data-cat="all">看贴</a>
   <a class="tab" href="#" data-cat="公告">公告</a>
   <a class="tab" href="#" data-cat="求助">求助</a>
   <a class="tab" href="#" data-cat="线索">线索</a>
@@ -62,19 +63,19 @@
 <!-- 帖子列表 + 侧栏（桌面两栏） -->
 <div class="page-wrap">
   <main class="post-list">
-    <!-- 档案馆说明行 -->
-    <div class="post-count">归档模式 ·
-      <button class="sort-btn active" id="sort-asc">正序</button><button class="sort-btn" id="sort-desc">倒序</button>
-      · <a href="account.html" style="color:var(--blue-link)">我的归档</a>
+    <!-- 排序行（普通论坛样式） -->
+    <div class="post-count">1200 回复帖，共 500 页 · 排序：
+      <a class="sort-link active" id="sort-asc" href="#sort">最早</a>
+      <a class="sort-link" id="sort-desc" href="#sort">最新</a>
     </div>
     <div id="post-list-body"></div>
-    <div class="post-count" id="empty-tip" style="display:none">没有找到相关帖子 —— 就像这个网站本身一样空。</div>
+    <div class="post-count" id="empty-tip" style="display:none">没有相关帖子 —— 这个版块也是空的。</div>
   </main>
 
-  <!-- 右侧栏：论坛热议 -->
+  <!-- 右侧栏：吧内热帖 -->
   <aside class="sidebar">
     <div class="side-card">
-      <h3>论坛热议</h3>
+      <h3>吧内热帖</h3>
       <ol class="hot-list">
         <li><a href="post.html?id=6">1. 什么是"重理轻文"？</a></li>
         <li><a href="post.html?id=2">2. 那只高足碗真的差点没了吗？</a></li>
@@ -104,8 +105,7 @@
   </div>
 
   <div class="board-msg" style="border-top:none">
-    <button class="board-leave v98-btn">我要留言</button>
-    <span class="board-none" style="margin-left:10px">（发送端已离线）</span>
+    <button class="board-leave board-btn">我要留言</button>
   </div>
 </section>
 
@@ -121,13 +121,13 @@
 <!-- 移动端底部导航 -->
 <nav class="mobile-bottom-nav">
   <a class="mnav active" href="index.html">首页</a>
-  <a class="mnav" href="#board" data-action="#board">线索</a>
+  <a class="mnav" href="#board" data-action="#board">留言板</a>
   <a class="mnav" href="account.html">我的</a>
 </nav>
 
-<script src="js/dialog.js?v=20260906"></script>
-<script src="js/posts.js?v=20260906"></script>
-<script src="js/story.js?v=20260906"></script>
-<script src="js/app.js?v=20260906"></script>
+<script src="js/dialog.js?v=20260907"></script>
+<script src="js/posts.js?v=20260907"></script>
+<script src="js/story.js?v=20260907"></script>
+<script src="js/app.js?v=20260907"></script>
 </body>
 </html>
