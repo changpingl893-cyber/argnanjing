@@ -5,3 +5,8 @@ _preview/
 # 璋冭瘯/涓存椂鏂囦欢
 _debug_*.html
 _serve*.js
+
+# 做旧版原图与备份（大图，不入库）
+newphoto/
+images/_original_backup/
+assets/old_photo2_original.jpg
