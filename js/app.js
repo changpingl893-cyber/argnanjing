@@ -1,153 +1,80 @@
-// 古时今日 · 论坛主站交互
-// 正常论坛列表：全部帖子按时间正序/倒序排列（可切换、记忆偏好）。
-// 特殊帖只有两类（已删除/私密），仍是正常列表项，点进去看对应提示。
-
+// 公众号主页：头卡 + 菜单 + 历史推送列表 + 往期留言墙
 (function () {
   const P = window.POSTS || {};
   const S = window.Story;
 
-  const body = document.getElementById('post-list-body');
-  let rows = [];
-  // 主线帖（存帖目录列出的剧情关键帖）→ 列表带金色"精"标
-  const ELITE = new Set(['23', '1', '21', '22', '2', '4', '5', '6', '9', '10', '11', '12', '13', '14', '15', '16', '18', '19']);
+  const pinnedId = Object.keys(P).find(id => P[id].pinned);
 
-  function currentSort() { return S.getSort(); }
-
-  function render() {
-    if (!body || !S) return;
-    const mode = currentSort();
-    let list = S.allPosts(mode);
-    // 置顶帖永远在最上（置顶之间按日期倒序）
-    const pinned = list.filter(([, p]) => p.pinned).sort((a, b) => b[1].date.localeCompare(a[1].date));
-    const rest = list.filter(([, p]) => !p.pinned);
+  function renderList() {
+    const body = document.getElementById('article-list');
+    if (!body) return;
     let html = '';
-
-    pinned.concat(rest).forEach(([id, p]) => {
-      const st = S.statsOf(id);
-      const badgeCls = p.deleted ? 'badge-dead' : (p.private ? 'badge-private' : (p.badgeClass || ''));
-      const eliteTag = ELITE.has(id) && !p.deleted ? '<span class="elite-tag">精</span>' : '';
+    // 置顶目录文
+    if (pinnedId && P[pinnedId]) {
+      const a = P[pinnedId];
       html += `
-      <article class="post-row ${p.deleted ? 'post-row-dead' : ''}" data-post="${id}" data-cat="${p.cat || ''}" style="cursor:pointer">
-        <div class="post-head">
-          <span class="post-badge ${badgeCls}">${p.badge || '帖'}</span>
-          <h2 class="post-title ${p.deleted ? 'post-title-deleted' : ''}">${p.title}</h2>
-          ${eliteTag}
+      <a class="art-item art-pinned" href="post.html?id=${pinnedId}">
+        <div class="art-head">
+          <span class="art-tag art-tag-pin">置顶</span>
+          <span class="art-title">${a.title}</span>
         </div>
-        <div class="post-foot">
-          <span class="post-author">${p.authorName}</span>
-          <span class="post-date">${p.date}</span>
-          <span class="post-replies">赞 ${st.likes} · 回复 ${st.replies}</span>
-          ${p.deleted ? '<span class="dead-chip">此帖已被删除</span>' : ''}
-          ${p.private ? '<span class="private-chip">内容已转移</span>' : ''}
+        <div class="art-meta">${a.date} · 阅读 ${S.fmtReads(a.reads)} · 赞 ${a.likes} · 在看 ${a.wawas}</div>
+        <div class="art-desc">这个号的完整目录。不知道从哪看起，就照这份看。</div>
+      </a>`;
+    }
+    // 历史文章（时间倒序；已删除的灰显）
+    S.allArticles().forEach(([id, a]) => {
+      if (String(id) === pinnedId) return;
+      const dead = a.deleted ? ' art-dead' : '';
+      html += `
+      <a class="art-item${dead}" href="post.html?id=${id}">
+        <div class="art-head">
+          ${a.submitter ? `<span class="art-tag art-tag-sub">投稿</span>` : ''}
+          <span class="art-title">${a.title}</span>
         </div>
-      </article>`;
+        <div class="art-meta">${a.date} · 阅读 ${S.fmtReads(a.reads)} · 赞 ${a.likes} · 在看 ${a.wawas}</div>
+        ${a.deleted ? '<div class="art-desc">该内容已被发布者删除</div>' : ''}
+      </a>`;
     });
-
     body.innerHTML = html;
-    rows = Array.from(body.querySelectorAll('.post-row[data-post]'));
-    bindRows();
-    updateSortBtns();
   }
 
-  function bindRows() {
-    body.querySelectorAll('.post-row[data-post]').forEach(el => {
-      el.addEventListener('click', (e) => {
-        if (e.target.closest('a')) return;
-        location.href = 'post.html?id=' + el.getAttribute('data-post');
-      });
+  /* 菜单（模拟公众号自定义菜单：点击分别滚动定位/弹提示） */
+  const menus = document.querySelectorAll('.wechat-menu a');
+  menus.forEach(m => {
+    m.addEventListener('click', (e) => {
+      const act = m.getAttribute('data-act');
+      if (act === 'history') { e.preventDefault(); const t = document.getElementById('article-list'); if (t) t.scrollIntoView({ behavior: 'smooth' }); }
+      else if (act === 'toc') { e.preventDefault(); if (pinnedId) location.href = 'post.html?id=' + pinnedId; }
+      else if (act === 'msg') {
+        e.preventDefault(); const t = document.getElementById('msgwall'); if (t) t.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* 关注按钮 */
+  const follow = document.getElementById('follow-btn');
+  if (follow) {
+    follow.addEventListener('click', () => {
+      const on = follow.textContent.startsWith('已');
+      follow.textContent = on ? '+ 关注' : '已关注 ✓';
     });
   }
 
-  /* ===== 排序切换（最早 / 最新 / 热门） ===== */
-  const ascBtn = document.getElementById('sort-asc');
-  const descBtn = document.getElementById('sort-desc');
-  const hotBtn = document.getElementById('sort-hot');
-  function updateSortBtns() {
-    const cur = currentSort();
-    if (ascBtn) ascBtn.className = 'sort-link' + (cur === 'asc' ? ' active' : '');
-    if (descBtn) descBtn.className = 'sort-link' + (cur === 'desc' ? ' active' : '');
-    if (hotBtn) hotBtn.className = 'sort-link' + (cur === 'hot' ? ' active' : '');
-  }
-  if (ascBtn) ascBtn.addEventListener('click', (e) => { e.preventDefault(); S.setSort('asc'); render(); });
-  if (descBtn) descBtn.addEventListener('click', (e) => { e.preventDefault(); S.setSort('desc'); render(); });
-  if (hotBtn) hotBtn.addEventListener('click', (e) => { e.preventDefault(); S.setSort('hot'); render(); });
-
-  /* ===== 搜索过滤 ===== */
-  const searchInput = document.querySelector('.search-input');
-  const searchBtn = document.querySelector('.search-btn');
-  const emptyTip = document.getElementById('empty-tip');
-
-  function applyFilter() {
-    const kw = (searchInput.value || '').trim().toLowerCase();
-    let visible = 0;
-    rows.forEach(el => {
-      const hay = (el.textContent || '').toLowerCase();
-      const show = !kw || hay.includes(kw);
-      el.style.display = show ? '' : 'none';
-      if (show) visible++;
-    });
-    if (emptyTip) emptyTip.style.display = visible ? 'none' : '';
-  }
-  if (searchInput) searchInput.addEventListener('input', applyFilter);
-  if (searchBtn) searchBtn.addEventListener('click', applyFilter);
-  if (searchInput) searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') applyFilter(); });
-
-  /* ===== tab 切版 ===== */
-  const tabs = Array.from(document.querySelectorAll('.forum-tabs .tab'));
-  tabs.forEach(tab => {
-    tab.addEventListener('click', (e) => {
+  /* 留言墙发送（已停用） */
+  const sendBtn = document.getElementById('msgwall-send');
+  if (sendBtn && window.v98Popup) {
+    sendBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const cat = tab.getAttribute('data-cat');
-      rows.forEach(el => {
-        const c = el.getAttribute('data-cat');
-        const show = !cat || cat === 'all' || c === cat;
-        el.style.display = show ? '' : 'none';
+      v98Popup({
+        title: '留言失败',
+        icon: 'warn',
+        text: '留言失败：该公众号已很久没有登录。\n\n最后一条留言停留在 2018 年 6 月，之后再没有人回复。',
+        buttons: [{ label: '知道了', primary: true }]
       });
-      if (emptyTip) emptyTip.style.display = 'none';
-      if (searchInput) searchInput.value = '';
-    });
-  });
-
-  /* ===== 底部导航 ===== */
-  document.querySelectorAll('.mnav').forEach(a => {
-    a.addEventListener('click', (e) => {
-      const action = a.getAttribute('data-action');
-      if (action === '#board') {
-        e.preventDefault();
-        const t = document.querySelector('#board');
-        if (t) t.scrollIntoView({ behavior: 'smooth' });
-      }
-      document.querySelectorAll('.mnav').forEach(x => x.classList.remove('active'));
-      a.classList.add('active');
-    });
-  });
-
-  /* ===== 关注 / 留言板 ===== */
-  const followBtn = document.querySelector('#follow-btn');
-  if (followBtn) {
-    followBtn.addEventListener('click', () => {
-      const following = followBtn.textContent.startsWith('已');
-      followBtn.textContent = following ? '+ 关注' : '已关注';
-      followBtn.classList.toggle('followed', !following);
-    });
-  }
-  const board = document.querySelector('.board-section');
-  if (board && window.v98Popup) {
-    board.addEventListener('click', (e) => {
-      if (e.target.closest('.board-leave')) {
-        v98Popup({
-          title: '留言板',
-          icon: 'warn',
-          text: '提交失败：服务器未响应。\n该留言板最后的回复停留在 2018 年 6 月，之后再也没有人来过。',
-          buttons: [{ label: '知道了', primary: true }]
-        });
-      }
     });
   }
 
-  /* ===== 启动 ===== */
-  render();
-  console.log('[古时今日] 论坛主站已加载 · 共 ' + S.totalCount() + ' 帖 · 排序 ' + currentSort());
+  renderList();
+  console.log('[公众号] 历史推送已加载');
 })();

@@ -3,65 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>帖子详情 · 古时今日</title>
-<link rel="stylesheet" href="css/style.css?v=20260907">
-<link rel="stylesheet" href="css/post.css?v=20260907">
-<link rel="stylesheet" href="css/vintage.css?v=20260907">
+<title>文章 · 古时今日</title>
+<link rel="stylesheet" href="css/wechat.css?v=20260908">
+<link rel="stylesheet" href="css/vintage.css?v=20260908">
 </head>
-<body class="post-page">
+<body>
 
-<header class="site-header">
-  <div class="logo-area">
-    <a class="logo-badge" href="index.html">古</a>
-    <span class="logo-name">古时今日</span>
-  </div>
-  <div class="search-area">
-    <input class="search-input" type="search" placeholder="搜索帖子 / 线索…">
-    <button class="search-btn">搜索</button>
-  </div>
-</header>
+<header class="wx-top">古时今日 <a class="wx-top-actions" href="index.html">历史消息</a></header>
 
-<!-- 帖子头 -->
-<div class="post-hero">
-  <a class="back-link" href="index.html">← 返回论坛</a>
-  <span class="post-cat-badge" id="post-badge">公告</span>
-  <h1 class="post-hero-title" id="post-title">帖子标题</h1>
-  <div class="post-lock-note" id="post-lock-note" style="display:none"></div>
-</div>
+<article class="wx-article">
+  <h1 class="wx-title" id="a-title">……</h1>
+  <div class="wx-byline"><b id="a-author">古时今日</b><span class="wx-orig" id="a-tag">原创</span><span id="a-date">—</span></div>
+  <div class="wx-src" id="a-submitter" style="display:none"></div>
 
-<!-- 帖子主体 -->
-<main class="post-detail">
-  <!-- 楼主楼 -->
-  <div class="floor floor-op" id="floor-op">
-    <div class="floor-user">
-      <a href="guardian.html?id=1">
-        <div class="floor-avatar" id="op-avatar">守</div>
-        <div class="floor-username" id="op-name">守夜人</div>
-      </a>
-      <div class="floor-tags" id="op-tags"></div>
-      <div class="floor-rank">楼主</div>
-    </div>
-    <div class="floor-body">
-      <div class="floor-content" id="op-content"></div>
-      <img class="floor-image" id="op-image" alt="" style="display:none">
-      <div class="floor-ip" id="op-ip">IP属地：—</div>
-    </div>
-  </div>
+  <div class="wx-body" id="a-body"></div>
+  <img class="wx-img" id="a-image" style="display:none" alt="">
+  <div class="wx-reads" id="a-reads"></div>
 
-  <!-- 回复楼层容器 -->
-  <div class="floors" id="floors"></div>
+  <div class="wx-origin" id="read-origin" style="display:none"><a href="photo.html">阅读原文</a></div>
 
-  <!-- 下一篇导航 -->
-  <div class="post-next" id="post-next"></div>
-</main>
+  <section class="wx-comments">
+    <div class="sec-title">留言 <span id="cmt-count">0</span></div>
+    <div id="comment-list"></div>
+    <button class="wx-write" id="write-btn">写留言</button>
+  </section>
 
-<div class="post-reply-bar">
-  <button class="reply-btn" id="reply-btn">回复</button>
-</div>
+  <div class="wx-nav" id="a-nav"></div>
+</article>
 
-<script src="js/dialog.js?v=20260907"></script>
-<script src="js/posts.js?v=20260907"></script>
-<script src="js/story.js?v=20260907"></script>
-<script src="js/post.js?v=20260907"></script>
+<footer class="wx-footer">该公众号已停更 · 最后推送：2018-06-30</footer>
+
+<script src="js/dialog.js?v=20260908"></script>
+<script src="js/posts.js?v=20260908"></script>
+<script src="js/story.js?v=20260908"></script>
+<script src="js/post.js?v=20260908"></script>
 </body>
 </html>

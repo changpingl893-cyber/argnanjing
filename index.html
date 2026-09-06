@@ -1,134 +1,74 @@
 <!DOCTYPE html>
-<!--
-  站名由来：古时的物件，今日的守护。
-  有人问过站长为什么要起这个名字，他回答：有的物件传了几百年，我们不过是在它们漫长的经历里，替它们多看一天。
-  —— 站长手记 · 2016-01
--->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>古时今日 · 论坛</title>
-<link rel="stylesheet" href="css/style.css?v=20260907">
-<link rel="stylesheet" href="css/vintage.css?v=20260907">
+<title>古时今日 · 公众号</title>
+<link rel="stylesheet" href="css/wechat.css?v=20260908">
+<link rel="stylesheet" href="css/vintage.css?v=20260908">
 </head>
 <body>
 
-<!-- 顶部：logo + 搜索栏 -->
-<header class="site-header">
-  <div class="logo-area">
-    <span class="logo-badge">古</span>
-    <span class="logo-name">古时今日</span>
-  </div>
-  <div class="search-area">
-    <input class="search-input" type="search" placeholder="搜索帖子 / 线索…">
-    <button class="search-btn">搜索</button>
-  </div>
-  <a class="header-link" href="account.html">我的</a>
+<header class="wx-top">古时今日
+  <span class="wx-top-actions">···</span>
 </header>
 
-<!-- 论坛横幅大图 -->
-<div class="forum-banner">
-  <img src="images/caiyou-vase.jpg" alt="古时今日论坛横幅">
-  <div class="forum-banner-title">古时今日 · 文物论坛</div>
-</div>
-
-<!-- 论坛铭牌：头像 + 名称 + 数据 -->
-<section class="forum-card">
-  <div class="forum-card-left">
-    <div class="forum-avatar">古</div>
-    <div class="forum-meta">
-      <div class="forum-title-row">
-        <h1 class="forum-name">古时今日</h1>
-        <span class="follow-btn" id="follow-btn">+ 关注</span>
-      </div>
-      <div class="forum-stats">
-        <span>关注：1,805</span>
-        <span>帖子：8,054</span>
-        <span class="dead-since">最后更新：2018-01-01</span>
-      </div>
+<!-- 公众号头卡 -->
+<section class="wx-hero">
+  <div class="wx-avatar-row">
+    <div class="wx-avatar">古</div>
+    <div class="wx-name-row">
+      <h1 class="wx-name">古时今日</h1>
+      <button class="wx-follow" id="follow-btn">+ 关注</button>
     </div>
+  </div>
+  <p class="wx-desc">守护文物的无名者们 · 2018 年停更，感谢曾经的关注</p>
+  <div class="wx-stats"><span><b>原创</b> 5 篇</span><span><b>粉丝</b> 3,012</span></div>
+</section>
+
+<div class="wx-notice"><i>⚠</i> 该公众号已长期未登录 · 最后登录时间：2018-01-02</div>
+
+<!-- 自定义菜单 -->
+<nav class="wechat-menu">
+  <a data-act="history">历史消息</a>
+  <a data-act="toc">目录</a>
+  <a data-act="msg">留言板</a>
+</nav>
+
+<!-- 历史消息 -->
+<section class="wx-articles">
+  <div class="sec-title">历史消息</div>
+  <div id="article-list"></div>
+</section>
+
+<!-- 往期留言墙 -->
+<section class="wx-msgwall" id="msgwall">
+  <div class="sec-title">往期留言</div>
+
+  <div class="msg-old">
+    <div class="msg-meta">游客 202205 · 2017-11-03 22:41</div>
+    <div class="msg-text">请问这个号还收投稿吗？想报名做志愿者。</div>
+  </div>
+  <div class="msg-old">
+    <div class="msg-meta">过客 · 2018-03-11 01:07</div>
+    <div class="msg-text">我还会再回来看看的。谢谢你们让我知道这些老物件。</div>
+  </div>
+  <div class="msg-old">
+    <div class="msg-meta">匿名 · 2018-06-30 04:12</div>
+    <div class="msg-text">有人吗？我把那幅画的照片发到后台了，怕弄丢……有人吗？</div>
+  </div>
+
+  <div class="msg-send-row">
+    <input class="msg-input-box" placeholder="写下你的留言…" disabled>
+    <button class="msg-send" id="msgwall-send">发送</button>
   </div>
 </section>
 
-<!-- 导航 tab（按版块过滤，过滤在已渲染列表上做） -->
-<nav class="forum-tabs">
-  <a class="tab active" href="#" data-cat="all">看贴</a>
-  <a class="tab" href="#" data-cat="公告">公告</a>
-  <a class="tab" href="#" data-cat="求助">求助</a>
-  <a class="tab" href="#" data-cat="线索">线索</a>
-  <a class="tab" href="#" data-cat="记录">记录</a>
-</nav>
+<footer class="wx-footer">该公众号已停更 · 最后推送：2018-06-30</footer>
 
-<!-- 帖子列表 + 侧栏（桌面两栏） -->
-<div class="page-wrap">
-  <main class="post-list">
-    <!-- 排序行（普通论坛样式） -->
-    <div class="post-count">1200 回复帖，共 500 页 · 排序：
-      <a class="sort-link active" id="sort-asc" href="#sort">最早</a>
-      <a class="sort-link" id="sort-desc" href="#sort">最新</a>
-      <a class="sort-link" id="sort-hot" href="#sort">热门</a>
-    </div>
-    <div id="post-list-body"></div>
-    <div class="post-count" id="empty-tip" style="display:none">没有相关帖子 —— 这个版块也是空的。</div>
-  </main>
-
-  <!-- 右侧栏：吧内热帖 -->
-  <aside class="sidebar">
-    <div class="side-card">
-      <h3>吧内热帖</h3>
-      <ol class="hot-list">
-        <li><a href="post.html?id=6">1. 什么是"重理轻文"？</a></li>
-        <li><a href="post.html?id=2">2. 那只高足碗真的差点没了吗？</a></li>
-        <li><a class="dead-link" href="404.html?ref=floor5">3. 有人注意到第 5 楼吗？<span class="dead-tag">已失效</span></a></li>
-        <li><a href="guardian.html?id=1&view=dyn">4. 还有人记得站长吗</a></li>
-      </ol>
-    </div>
-  </aside>
-</div>
-
-<!-- 无人回应的留言板 -->
-<section class="board-section" id="board">
-  <h3 class="board-title">留言板</h3>
-  <p class="board-sub">最后一条留言停留在 2018 年 6 月 · 之后再没有人来过</p>
-
-  <div class="board-msg">
-    <div class="board-meta">游客 202205 · 2017-11-03 22:41</div>
-    <div class="board-text">请问协会还收人吗？想报名做志愿者。</div>
-  </div>
-  <div class="board-msg">
-    <div class="board-meta">过客 · 2018-03-11 01:07</div>
-    <div class="board-text">我还会再回来看看的。谢谢你们让我知道这些老物件。</div>
-  </div>
-  <div class="board-msg">
-    <div class="board-meta">匿名 · 2018-06-30 04:12</div>
-    <div class="board-text">有人吗？我把那幅画的照片传到相册了，怕弄丢……有人吗？</div>
-  </div>
-
-  <div class="board-msg" style="border-top:none">
-    <button class="board-leave board-btn">我要留言</button>
-  </div>
-</section>
-
-<!-- 底部 -->
-<footer class="site-footer">
-  <p>本站已永久停更 · 最后更新于 2018 年</p>
-  <p style="margin-top:6px">
-    <a class="dead-link" href="404.html?ref=oldhome">旧版首页</a><span class="dead-tag">已失效</span> ·
-    <a class="dead-link" href="404.html?ref=mail">站务信箱</a><span class="dead-tag">已停用</span>
-  </p>
-</footer>
-
-<!-- 移动端底部导航 -->
-<nav class="mobile-bottom-nav">
-  <a class="mnav active" href="index.html">首页</a>
-  <a class="mnav" href="#board" data-action="#board">留言板</a>
-  <a class="mnav" href="account.html">我的</a>
-</nav>
-
-<script src="js/dialog.js?v=20260907"></script>
-<script src="js/posts.js?v=20260907"></script>
-<script src="js/story.js?v=20260907"></script>
-<script src="js/app.js?v=20260907"></script>
+<script src="js/dialog.js?v=20260908"></script>
+<script src="js/posts.js?v=20260908"></script>
+<script src="js/story.js?v=20260908"></script>
+<script src="js/app.js?v=20260908"></script>
 </body>
 </html>
