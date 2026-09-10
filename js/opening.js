@@ -31,11 +31,11 @@
   function askEnter() {
     if (!window.v98Popup) return;
     const dlg = v98Popup({
-      title: '进入图片档案',
+      title: '档案访问确认',
       icon: 'warn',
-      html: '共 61 张，其中 7 张是文物。<br><br>' +
-            '<span style="color:#8b93a7;font-size:12px">点开看大图，双击翻面看背面的字。<br>' +
-            '照片与文字都是原样收着的。</span>',
+      html: '是否进入本档案？<br><br>' +
+            '<span style="color:#8b93a7;font-size:12px">本档案的最后一次更新停留在 2018 年 1 月。<br>' +
+            '进入后所看到的一切，均由当时的记录者留下。</span>',
       dismissable: false,
       buttons: []
     });
@@ -55,17 +55,17 @@
 
     const yes = document.createElement('button');
     yes.className = 'v98-btn pressed';
-    yes.textContent = '进去';
+    yes.textContent = '是';
     yes.addEventListener('click', () => {
       dlg.close();
       document.body.style.transition = 'opacity .9s ease';
       document.body.style.opacity = '0';
-      setTimeout(() => { location.href = 'gallery.html'; }, 900);
+      setTimeout(() => { location.href = 'archive.html'; }, 900);
     });
 
     const no = document.createElement('button');
     no.className = 'v98-btn';
-    no.textContent = '先不看';
+    no.textContent = '否';
     no.addEventListener('click', () => {
       dlg.close();
       document.body.style.transition = 'opacity 1.2s ease';

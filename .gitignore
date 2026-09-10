@@ -15,8 +15,3 @@ assets/old_photo2_original.jpg
 _preview-server.js
 _serve*.js
 _debug_*.html
-
-# 字体源文件（只提交子集化的 woff2）
-assets/fonts/*.ttf
-_font-chars.txt
-_clue-map.json
