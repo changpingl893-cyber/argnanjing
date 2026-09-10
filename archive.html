@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文物档案 · 推理板</title>
+<link rel="stylesheet" href="css/board.css?v=20260909">
+</head>
+<body class="board-page">
+
+<div class="board" id="board">
+  <div class="board-head">
+    <div class="board-title">文物档案</div>
+    <div class="board-sub">线索 <b id="card-count">0</b> 条 · 点开每一张，看清每一条红线</div>
+  </div>
+  <div class="board-actions">
+    <a href="index.html">重新看开场</a>
+    <a href="#" id="rel-toggle">显示/隐藏连线</a>
+  </div>
+
+  <svg id="lines"></svg>
+  <div id="pins"></div>
+</div>
+
+<div class="board-tip">点击板上的照片与纸条，逐份查看档案</div>
+
+<!-- 档案弹窗 -->
+<div class="sheet-mask" id="sheet-mask">
+  <div class="sheet" id="sheet">
+    <div class="sheet-head">
+      <span class="sheet-type" id="s-type">档案</span>
+      <span class="sheet-title" id="s-title">—</span>
+      <span class="sheet-close" id="s-close">✕</span>
+    </div>
+    <img class="sheet-img" id="s-img" style="display:none" alt="">
+    <div class="sheet-body" id="s-body"></div>
+    <div class="sheet-rel">
+      <div class="sheet-rel-title">相关线索</div>
+      <div id="s-rel"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/archive-data.js?v=20260909"></script>
+<script src="js/board.js?v=20260909"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+/* 推理黑板：黑板质感 + 线索卡热区 + 红线 + 档案弹窗 */
+:root {
+  --board-bg: #14181a;
+  --chalk: #e7e9e6;
+  --chalk-dim: #9aa3a0;
+  --chalk-line: rgba(231,233,230,.28);
+  --red-line: #b8352f;
+  --royal: #3b6bd6;
+  --paper: #efe9dc;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body.board-page {
+  background: #0b0d0e; color: var(--chalk);
+  font-family: "Songti SC", "SimSun", "Source Han Serif SC", Georgia, serif;
+  overflow-x: hidden;
+}
+
+/* ===== 黑板画布 =====
+   ⚠ 你的黑板素材：把图片放到 images/board.jpg，然后取消下一行的注释即可 */
+.board {
+  position: relative; width: 100%; min-height: 100vh;
+  background:
+    /* url('../images/board.jpg') center/cover no-repeat, */
+    radial-gradient(ellipse at 30% 20%, #1d2326 0%, #141a1c 45%, #0e1213 100%);
+  overflow: hidden;
+}
+/* 黑板擦痕 / 粉笔灰质感 */
+.board::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 70% 80%, rgba(255,255,255,.03), transparent 55%),
+    radial-gradient(ellipse at 20% 60%, rgba(255,255,255,.025), transparent 50%),
+    repeating-linear-gradient(115deg, rgba(255,255,255,.012) 0 2px, transparent 2px 6px);
+  mix-blend-mode: screen;
+}
+
+/* 顶部标题（粉笔手写感） */
+.board-head {
+  position: absolute; top: 26px; left: 34px; z-index: 3;
+}
+.board-title {
+  font-size: 22px; letter-spacing: .3em; color: rgba(231,233,230,.85);
+  text-shadow: 0 0 12px rgba(255,255,255,.12);
+}
+.board-sub { margin-top: 8px; font-size: 12px; color: var(--chalk-dim); letter-spacing: .18em; }
+.board-sub b { color: #cfa14a; font-weight: 400; }
+
+/* 退出/重看 */
+.board-actions { position: absolute; top: 28px; right: 30px; z-index: 3; }
+.board-actions a {
+  color: var(--chalk-dim); font-size: 12px; text-decoration: none;
+  border-bottom: 1px solid rgba(154,163,160,.35); margin-left: 14px;
+}
+.board-actions a:hover { color: var(--chalk); }
+
+/* ===== 红线层 ===== */
+#lines { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+/* ===== 线索卡（钉在黑板上） ===== */
+.pin {
+  position: absolute; z-index: 2; cursor: pointer;
+  width: 168px; transform: translate(-50%, -50%);
+  transition: transform .25s ease, filter .25s ease;
+}
+.pin:hover { transform: translate(-50%, -50%) scale(1.04); filter: brightness(1.08); }
+.pin-inner {
+  background: #f6f3ec; color: #23262b; padding: 7px 7px 9px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.55);
+  border-radius: 2px; position: relative;
+}
+.pin-inner img { width: 100%; display: block; border-radius: 1px; filter: saturate(.92); }
+.pin-paper .pin-inner::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.028) 0 1px, transparent 1px 22px);
+  pointer-events: none;
+}
+.pin-label {
+  font-size: 13px; font-weight: 700; margin-top: 7px; letter-spacing: .04em;
+  color: #23262b;
+}
+.pin-sum { font-size: 11px; color: #6b6a63; margin-top: 3px; line-height: 1.5; }
+/* 图钉 */
+.pin-pin {
+  position: absolute; top: -7px; left: 50%; transform: translateX(-50%);
+  width: 12px; height: 12px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e05a4e, #8e2b22);
+  box-shadow: 0 2px 4px rgba(0,0,0,.6);
+}
+.pin-clue .pin-inner { background: #22303c; color: #dfe6ee; }
+.pin-clue .pin-label { color: #eaf0f6; }
+.pin-clue .pin-sum { color: #94a5b5; }
+.pin-doc .pin-inner { background: #e9e4d6; }
+.pin-doc .pin-inner::after {
+  content: '文件'; position: absolute; right: 6px; top: 5px;
+  font-size: 9px; color: #a09a8a; letter-spacing: .2em;
+}
+.pin-press .pin-inner { background: #e6e2d5; }
+.pin-press .pin-inner::after {
+  content: '剪报'; position: absolute; right: 6px; top: 5px;
+  font-size: 9px; color: #a09a8a; letter-spacing: .2em;
+}
+.pin-note-dot {
+  position: absolute; inset: auto 0 -18px; text-align: center;
+  color: var(--chalk-dim); font-size: 10px; letter-spacing: .1em;
+}
+
+/* ===== 档案弹窗（点开线索卡） ===== */
+.sheet-mask {
+  position: fixed; inset: 0; background: rgba(3,4,5,.72);
+  display: none; align-items: center; justify-content: center; z-index: 40; padding: 20px;
+}
+.sheet-mask.show { display: flex; }
+.sheet {
+  width: min(680px, 100%); max-height: 86vh; overflow-y: auto;
+  background: var(--paper); color: #22252a;
+  box-shadow: 0 22px 60px rgba(0,0,0,.7);
+  border-radius: 3px; padding: 0 0 26px;
+  animation: sheetIn .28s ease;
+}
+@keyframes sheetIn { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+.sheet-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 20px; border-bottom: 1px solid rgba(0,0,0,.09);
+  position: sticky; top: 0; background: var(--paper); z-index: 2;
+}
+.sheet-type {
+  font-size: 10px; letter-spacing: .2em; color: #8a8577;
+  border: 1px solid #c9c2b0; border-radius: 2px; padding: 1px 6px;
+}
+.sheet-title { font-size: 17px; font-weight: 700; letter-spacing: .04em; }
+.sheet-close {
+  margin-left: auto; cursor: pointer; color: #8a8577; font-size: 18px; line-height: 1;
+  padding: 2px 8px;
+}
+.sheet-close:hover { color: #b8352f; }
+.sheet-img { width: 100%; display: block; }
+.sheet-body { padding: 18px 22px 4px; }
+.sheet-body p { font-size: 15px; line-height: 2; margin-bottom: 14px; color: #33363c; }
+.sheet-body p:first-child { font-weight: 600; color: #1e2126; }
+.sheet-rel { padding: 6px 22px 0; }
+.sheet-rel-title { font-size: 11px; letter-spacing: .2em; color: #8a8577; margin-bottom: 8px; }
+.rel-chip {
+  display: inline-block; margin: 0 8px 8px 0; padding: 4px 10px;
+  background: rgba(59,107,214,.09); color: #2f4f9e; border: 1px solid rgba(59,107,214,.25);
+  border-radius: 3px; font-size: 12px; cursor: pointer;
+}
+.rel-chip:hover { background: rgba(59,107,214,.16); }
+
+/* ===== 提示条 ===== */
+.board-tip {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+  color: var(--chalk-dim); font-size: 12px; letter-spacing: .16em;
+  background: rgba(10,12,13,.6); padding: 7px 16px; border-radius: 20px;
+  border: 1px solid rgba(154,163,160,.18); z-index: 5;
+}
+
+@media (max-width: 700px) {
+  .board { min-height: 0; padding: 96px 0 60px; }
+  .pin { position: relative; left: auto !important; top: auto !important; transform: none;
+         display: block; width: min(86%, 320px); margin: 0 auto 22px; }
+  .pin:hover { transform: none; }
+  #lines { display: none; }
+  .board-head { position: static; padding: 0 20px; }
+  .board-actions { position: static; padding: 12px 20px 0; }
+  /* 手机端：提示条改为顶部静态文字，不遮卡片 */
+  .board-tip {
+    position: static; transform: none; display: block; text-align: center;
+    margin: 0 auto 18px; width: fit-content;
+    background: transparent; border: none; letter-spacing: .1em;
+  }
+  body.board-page { display: flex; flex-direction: column; }
+  .board-tip { order: -1; padding-top: 16px; }
+}
