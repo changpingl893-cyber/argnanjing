@@ -48,6 +48,73 @@ body.board-page {
 }
 .board-actions a:hover { color: var(--blue-soft); }
 
+/* ===== 背景层：水印 / 分区框 / 时间轴 / 粉笔标注 ===== */
+.board-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+
+.bg-watermark {
+  position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%) rotate(-7deg);
+  font-size: 172px; letter-spacing: .1em; color: rgba(133, 195, 232, .045);
+  white-space: nowrap; font-weight: 700;
+}
+
+.zone {
+  position: absolute; top: 21%; bottom: 22%;
+  border: 1px dashed rgba(133, 195, 232, .16); border-radius: 4px;
+}
+.zone span {
+  position: absolute; top: 8px; left: 8px;
+  font-size: 11px; letter-spacing: .32em; color: rgba(133, 195, 232, .34);
+  writing-mode: vertical-rl;
+}
+.zone-left  { left: 1.5%;  right: 63%; }
+.zone-right { left: 63%;  right: 1.5%; border-color: rgba(201, 20, 30, .14); }
+.zone-right span { color: rgba(201, 20, 30, .32); }
+
+.bg-axis { position: absolute; left: 0; right: 0; bottom: 12.5%; height: 40px; width: 100%; }
+.axis-marks { position: absolute; left: 0; right: 0; bottom: 9.6%; }
+.axis-marks span {
+  position: absolute; transform: translateX(-50%);
+  font-size: 10px; letter-spacing: .14em; color: rgba(133, 195, 232, .38);
+  white-space: nowrap;
+}
+
+.chalk {
+  position: absolute; font-size: 13px; letter-spacing: .06em;
+  color: rgba(233, 240, 252, .30);
+  font-family: "Kaiti SC", "KaiTi", "Songti SC", serif;
+}
+.chalk-1 { left: 6%;  top: 34%; transform: rotate(-4deg); }
+.chalk-2 { right: 4%; top: 62%; transform: rotate(3deg); color: rgba(255, 108, 96, .34); }
+.chalk-3 { left: 46%; bottom: 17%; transform: rotate(-2deg); }
+
+/* ===== 顶部统计 ===== */
+.board-stats {
+  position: absolute; top: 104px; left: 34px; z-index: 4;
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  font-size: 11px; letter-spacing: .12em; color: var(--text-dim);
+  background: rgba(8, 21, 48, .72); border: 1px solid rgba(133, 195, 232, .16);
+  border-radius: 4px; padding: 6px 14px;
+}
+.board-stats b { color: var(--blue-soft); font-size: 14px; margin-right: 3px; }
+.board-stats .bs-red b { color: var(--red-hot); }
+
+/* ===== 底部图例 ===== */
+.board-legend {
+  position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center;
+  padding: 8px 18px; border-radius: 22px; z-index: 5;
+  background: rgba(8, 21, 48, .82); border: 1px solid rgba(133, 195, 232, .2);
+  font-size: 11px; color: var(--text-dim); letter-spacing: .1em;
+}
+.board-legend span { display: flex; align-items: center; gap: 5px; }
+.lg { width: 9px; height: 9px; border-radius: 1px; display: inline-block; }
+.lg-photo { background: var(--blue-bright); }
+.lg-paper { background: #b8a173; }
+.lg-press { background: #8a8272; }
+.lg-doc   { background: #6f7fa2; }
+.lg-clue  { background: var(--red); }
+.lg-tip { color: #45557a; }
+
 /* ===== 红线层（发光朱红） ===== */
 #lines { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 
@@ -130,6 +197,20 @@ body.board-page {
 .sheet-body { padding: 18px 22px 4px; }
 .sheet-body p { font-size: 15px; line-height: 2; margin-bottom: 14px; color: #33363c; }
 .sheet-body p:first-child { font-weight: 600; color: #1a1f2b; }
+
+/* 著录信息表 */
+.sheet-meta {
+  margin: 6px 22px 0; border-top: 1px solid var(--paper-line); border-bottom: 1px solid var(--paper-line);
+}
+.sheet-meta:empty { display: none; }
+.meta-row {
+  display: flex; gap: 14px; padding: 7px 0;
+  border-bottom: 1px dashed rgba(0,0,0,.07); font-size: 13px;
+}
+.meta-row:last-child { border-bottom: none; }
+.meta-row span { color: var(--paper-dim); letter-spacing: .16em; flex: 0 0 62px; font-size: 12px; }
+.meta-row b { color: #23272f; font-weight: 600; }
+.meta-row b.meta-red { color: var(--red); }
 .sheet-stamp {
   margin: 6px 22px 0; text-align: right;
   color: var(--red); font-size: 12px; letter-spacing: .18em;
@@ -155,18 +236,28 @@ body.board-page {
 }
 
 @media (max-width: 700px) {
-  .board { min-height: 0; padding: 96px 0 60px; }
+  .board { min-height: 0; padding: 92px 0 60px; }
   .pin { position: relative; left: auto !important; top: auto !important; transform: none;
          display: block; width: min(86%, 320px); margin: 0 auto 22px; }
   .pin:hover { transform: none; }
   #lines { display: none; }
+  .board-bg { display: none; }
   .board-head { position: static; padding: 0 20px; }
+  .board-stats { position: static; padding: 10px 20px 0; }
   .board-actions { position: static; padding: 12px 20px 0; }
-  .board-tip {
-    position: static; transform: none; display: block; text-align: center;
-    margin: 0 auto 18px; width: fit-content;
-    background: transparent; border: none; letter-spacing: .1em;
+  .board-legend {
+    position: static; transform: none; border-radius: 8px;
+    margin: 8px 16px 20px; justify-content: flex-start;
   }
+  .lg-tip { display: none; }
   body.board-page { display: flex; flex-direction: column; }
-  .board-tip { order: -1; padding-top: 16px; }
 }
+
+/* ===== 卡片编号（档案感） ===== */
+.pin-no {
+  position: absolute; left: 6px; top: 5px;
+  font-size: 9px; letter-spacing: .1em; color: #9c968a;
+  background: rgba(255,255,255,.7); padding: 0 4px; border-radius: 2px;
+}
+.pin-photo .pin-no { color: var(--blue); }
+.pin-clue .pin-no { color: var(--red); }

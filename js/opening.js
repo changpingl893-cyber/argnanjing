@@ -1,14 +1,13 @@
 // 开场页：静默 → 序章逐段浮现 → 老旧弹窗确认 → 进入档案 / 离开
 (function () {
   const SILENCE_MS = 2600;   // 黑场静默时长
-  const STEP_MS = 1500;      // 序章每段浮现间隔
 
   const silence = document.getElementById('act-silence');
-  const prologue = document.getElementById('act-prologue');
+  const prologue = document.getElementById('prologue') || document.getElementById('act-prologue');
   const leave = document.getElementById('act-leave');
   const zone = document.getElementById('dialog-zone');
 
-  const lines = () => Array.from(document.querySelectorAll('#act-prologue .line'));
+  const lines = () => Array.from(document.querySelectorAll('#prologue .line, #act-prologue .line'));
 
   function showPrologue() {
     silence.style.opacity = '0';
@@ -17,9 +16,15 @@
       prologue.style.display = 'block';
       window.scrollTo(0, 0);
       const ls = lines();
-      ls.forEach((l, i) => setTimeout(() => l.classList.add('show'), 260 + i * STEP_MS));
-      setTimeout(askEnter, 260 + ls.length * STEP_MS + 700);
-    }, 1400);
+      let last = 400;
+      ls.forEach((l, i) => {
+        // 优先用元素自带的 data-delay（毫秒）；否则按顺序 1400ms 递进
+        const d = l.dataset.delay ? parseInt(l.dataset.delay, 10) : 400 + i * 1400;
+        last = Math.max(last, d);
+        setTimeout(() => l.classList.add('show'), d);
+      });
+      setTimeout(askEnter, last + 900);
+    }, 1200);
   }
 
   /* 老旧弹窗：是否进入（作为文档流元素，接在序章文字下方出现） */

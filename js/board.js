@@ -9,18 +9,37 @@
 
   const TYPE_NAME = { photo: '照片', paper: '字条', press: '剪报', doc: '文件', clue: '线索' };
   const STAMP_TEXT = { photo: '馆藏影记', paper: '手书 · 存档', press: '剪报 · 存档', doc: '已核 · 存档', clue: '待考 · 存疑' };
+  // 著录信息（档案的字段感）—— 想改字段直接改这里
+  const META = {
+    bottle: { era: '明 · 官窑', src: '守夜人 保存', state: '完好' },
+    bowl:   { era: '明中期', src: '青瓷 保存', state: '完好' },
+    ruyi:   { era: '清', src: '如意 追回', state: '完好' },
+    scroll: { era: '清', src: '长卷 保存', state: '绢面起翘' },
+    plum:   { era: '清中期 · 绢本', src: '过客 建档', state: '有霉斑' },
+    plate:  { era: '明宣德 · 斗彩', src: '陈列室', state: '2017-07-16 失窃' },
+    photo:  { era: '2016-12-28', src: '四人合影', state: '手写批注' },
+    note:   { era: '2017-08-28', src: '如意 手书', state: '未写完' },
+    comment:{ era: '2016-05-20', src: '读者留言', state: '已随账号删除' },
+    police: { era: '2017-07-16', src: '受案回执', state: '未立案' },
+    reject: { era: '2016 / 2017', src: '经费批复', state: '三次驳回' },
+    byst:   { era: '2018-06-30', src: '匿名留言', state: '无人回复' },
+    museum: { era: '—', src: '编者按', state: '尚存 · 待你查证' },
+  };
   const pinEls = {};
 
   /* ===== 渲染线索卡 ===== */
-  cards.forEach(c => {
+  const PREFIX = { photo: '物证', paper: '手书', press: '剪报', doc: '文件', clue: '线索' };
+  cards.forEach((c, idx) => {
     const el = document.createElement('div');
     el.className = 'pin pin-' + (c.type || 'photo');
     el.style.left = c.x + '%';
     el.style.top = c.y + '%';
     el.dataset.id = c.id;
+    const no = (PREFIX[c.type] || '档案') + ' ' + String(idx + 1).padStart(2, '0');
     el.innerHTML = `
       <div class="pin-inner">
         <div class="pin-pin"></div>
+        <span class="pin-no">${no}</span>
         ${c.image ? `<img src="${c.image}" alt="${c.label}">` : ''}
         <div class="pin-label">${c.label}</div>
         <div class="pin-sum">${c.summary || ''}</div>
@@ -95,6 +114,17 @@
     if (c.image) { img.src = c.image; img.style.display = 'block'; }
     else img.style.display = 'none';
     document.getElementById('s-body').innerHTML = (c.detail || []).map(p => `<p>${p}</p>`).join('');
+
+    /* 著录信息表 */
+    const meta = META[id];
+    const metaEl = document.getElementById('s-meta');
+    if (metaEl) {
+      metaEl.innerHTML = meta ? `
+        <div class="meta-row"><span>年 代</span><b>${meta.era}</b></div>
+        <div class="meta-row"><span>来 源</span><b>${meta.src}</b></div>
+        <div class="meta-row"><span>现 状</span><b class="${/失窃|删|无|未/.test(meta.state) ? 'meta-red' : ''}">${meta.state}</b></div>
+      ` : '';
+    }
 
     const rel = document.getElementById('s-rel');
     const rels = (c.related || []).map(rid => cards.find(x => x.id === rid)).filter(Boolean);
