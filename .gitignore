@@ -15,3 +15,6 @@ assets/old_photo2_original.jpg
 _preview-server.js
 _serve*.js
 _debug_*.html
+
+_build-relics.js
+_relic-map.json

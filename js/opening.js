@@ -23,7 +23,7 @@
         last = Math.max(last, d);
         setTimeout(() => l.classList.add('show'), d);
       });
-      setTimeout(askEnter, last + 900);
+      setTimeout(askEnter, last + 5000);   // 文字全部显示完，再等 5 秒才弹窗
     }, 1200);
   }
 

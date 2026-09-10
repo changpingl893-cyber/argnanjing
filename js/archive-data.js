@@ -1,155 +1,71 @@
-// 推理黑板 · 线索卡数据
-// 【你可以直接改这个文件】每张卡的文案都在这里；改完刷新即生效。
-// 字段说明：
-//   id      卡片唯一标识（连线用，别改）
-//   type    卡片类型：photo 照片 / paper 字条 / press 剪报 / doc 文件 / clue 线索
-//   label   钉在黑板上显示的名字（越短越好，6 字以内）
-//   summary 黑板上卡片下面的一句话（20 字内）
-//   detail  点开卡片后弹出的档案正文：数组，一段一条
-//   image   图片路径（没有就删掉这行，会显示成纸质卡片）
-//   related 关联线索的 id 列表（黑板上的红线按这个连）
-//   x, y    卡片在黑板上位置（百分比，左/上；等你的黑板素材来了我再统一校一遍）
+// 线索板数据
+//  main  主线索卡：可点开看大图、双击翻面看背面档案
+//  bg    背景卡：铺在下面、互相重叠，不作说明，也不可点
+// 图片全部来自 njmuseum/photos/raw（已压缩到 assets/relics/）
 
 const ARCHIVE = {
-  title: '古时今日 · 文物档案',
+  title: '文物档案',
   cards: [
-    {
-      id: 'bottle', type: 'photo',
-      label: '霁蓝釉瓶', summary: '守夜人守了它十几年',
-      image: 'images/caiyou-vase.jpg',
-      detail: [
-        '明代官窑霁蓝釉带盖大瓶。深蓝如天色，一窑只成一两件。',
-        '六百多年里，它被当成普通大瓶装过粮、盛过水。好物被糟蹋，从来不是它自己的错。',
-        '守夜人留下的一句话：「它是镇站之宝，别的都可以有闪失，它不能。」'
-      ],
-      related: ['bowl', 'photo'], x: 12, y: 26
-    },
-    {
-      id: 'bowl', type: 'photo',
-      label: '青花高足碗', summary: '「差一点就没了」',
-      image: 'images/footed-bowl.jpg',
-      detail: [
-        '明中期青花高足碗。青瓷为它守了九年。',
-        '2016 年有人出价想把它「请走」；青瓷发文问大家该不该让它走，后来决定不走了。',
-        '2017 年 3 月，那篇旧文被截图转发，说他是「拿文物炒作」。三周后，他再没有上线。'
-      ],
-      related: ['bottle', 'press', 'note'], x: 44, y: 20
-    },
-    {
-      id: 'ruyi', type: 'photo',
-      label: '玉如意', summary: '从中间人手里追回来的',
-      image: 'images/jade-ruyi.jpg',
-      detail: [
-        '清代玉如意。2014 年在山西一位老藏家家里被「请走」，2015 年出现在私下交易群里，开价七位数。',
-        '如意跑了三趟，托人牵线，把它从中间人手里劝了回来。',
-        '他留过一句话：「福器不该淌在黑市上。」'
-      ],
-      related: ['note', 'police'], x: 72, y: 26
-    },
-    {
-      id: 'scroll', type: 'photo',
-      label: '山水长卷', summary: '三次申请，三次驳回',
-      image: 'images/landscape.jpg',
-      detail: [
-        '清代水墨山水长卷。长卷极难保存，最怕梅雨——2016 年 7 月，它所在房间湿度到过 78%。',
-        '长卷三年写了三次申请，想给它做一个恒温柜。三次都被驳回：「经费紧张，优先支持理工文教方向。」',
-        '2017 年 9 月底，他留下一句「我也该走了」，再没有出现。'
-      ],
-      related: ['reject'], x: 16, y: 46
-    },
-    {
-      id: 'plum', type: 'photo',
-      label: '梅花工笔画', summary: '「想开给人看的一株花」',
-      image: 'images/plum.jpg',
-      detail: [
-        '清代中期工笔梅花，绢本。过客在一个旧书摊上第一次见到它，回去三天没睡好。',
-        '绢面已有霉斑。他给自己定的任务是：每个月拍一次照、记一次档案。',
-        '2017 年 10 月，他留下一句「有些事我没法说」，也走了。'
-      ],
-      related: ['scroll'], x: 40, y: 40
-    },
-    {
-      id: 'plate', type: 'photo',
-      label: '斗彩大盘', summary: '2017-07-16 不见了',
-      image: 'images/doucai-plate.jpg',
-      detail: [
-        '明宣德斗彩大盘，全站最精美、最值钱的一件。',
-        '2017 年 7 月 16 日清晨，陈列室的柜子没有撬痕，钥匙人手一把，登记簿上前一晚十点还有人签退。',
-        '报警回执上写着：「民间展示的文物，来源说不清楚，立案先缓缓。」'
-      ],
-      related: ['police', 'comment', 'note'], x: 62, y: 50
-    },
-    {
-      id: 'photo', type: 'photo',
-      label: '四人合影', summary: '手写着 2017.12.28',
-      image: 'assets/old_photo2.jpg',
-      detail: [
-        '2016 年 12 月 28 日，四个人在博物院门前合了这张影。第一次，也是唯一一次聚齐。',
-        '照片右下角有一行手写的字：2017.12.28 —— 那不是合影的日子。',
-        '2017 年 12 月 28 日，是这个号里最后还有人的一天。三天后，守夜人写下最后一篇，网站再没有更新过。'
-      ],
-      related: ['bottle', 'byst', 'museum'], x: 78, y: 74
-    },
-    {
-      id: 'note', type: 'paper',
-      label: '一张字条', summary: '「明天再说」',
-      detail: [
-        '字条上只有三行字，像是没写完：',
-        '「名单对上了。我好像知道是谁了。明天再说。」',
-        '落款日期：2017-08-28。此后，再没有他的任何消息。'
-      ],
-      related: ['ruyi', 'plate', 'police'], x: 52, y: 24
-    },
-    {
-      id: 'comment', type: 'press',
-      label: '一条留言', summary: '405 个赞',
-      detail: [
-        '剪报：一个叫「故纸堆」的读者，在首篇文章下留过一条很长的自我介绍——「走南闯北收些旧书旧货，帮人掌掌眼、看看来历」。',
-        '这条留言有 405 个赞，是全号最高。',
-        '2017 年 7 月 25 日，号主发了一条说明：「读者『故纸堆』的个人信息已于今日删除。」'
-      ],
-      related: ['plate', 'note'], x: 26, y: 68
-    },
-    {
-      id: 'police', type: 'doc',
-      label: '回执', summary: '「立案先缓缓」',
-      detail: [
-        '报警回执复印件，日期 2017-07-16。',
-        '受案意见一栏：「民间展示的文物，来源说不清楚，立案先缓缓。」',
-        '下方有一行手写小字，笔迹很重：「东西是在我们自己人眼皮底下没的。」'
-      ],
-      related: ['plate', 'ruyi'], x: 66, y: 30
-    },
-    {
-      id: 'reject', type: 'doc',
-      label: '驳回通知', summary: '第三次了',
-      detail: [
-        '申请批复复印件。三次申请，三次驳回，理由年年相同：「经费紧张，优先支持理工文教方向。」',
-        '长卷在最后一次申请后面写了一行字：「我不是要钱，我是要这卷画别在我手上坏掉。」'
-      ],
-      related: ['scroll', 'plum'], x: 8, y: 78
-    },
-    {
-      id: 'byst', type: 'clue',
-      label: '一条无人回复的留言', summary: '「有人吗？」',
-      detail: [
-        '2018 年 6 月 30 日凌晨 4:12，一条匿名留言：',
-        '「有人吗？我把那幅画的照片发到后台了，怕弄丢……有人吗？」',
-        '此后，再没有人回复过。'
-      ],
-      related: ['photo', 'plum'], x: 34, y: 84
-    },
-    {
-      id: 'museum', type: 'clue',
-      label: '展柜', summary: '它们其实都还在',
-      detail: [
-        '档案的最后一页，是号主留下的一句话：',
-        '「后来的人如果看到这里，不必记住我们。只请记住这些物件还活着，且在等着被重新记起。」',
-        '有些东西，你以为它随着这个网站一起消失了。',
-        '——去搜一搜它们的名字。它们大多好好地待在展柜里。'
-      ],
-      related: ['photo', 'bottle', 'bowl'], x: 84, y: 38
-    }
+    /* ============ 主线索卡（有背面档案）============ */
+    { id: 'r01', kind: 'main', file: 'assets/relics/relic-01.jpg', name: '霁蓝釉瓶',
+      era: '明代 · 官窑', source: '守夜人 保存', state: '完好',
+      note: '深蓝如天色。一窑只成一两件，烧它的人得等火候自己到位。它传了六百年，装过粮，也盛过水。',
+      related: ['r02', 'r03'], x: 12, y: 27, w: 178, rot: -3, z: 12 },
+
+    { id: 'r02', kind: 'main', file: 'assets/relics/relic-02.jpg', name: '青花高足碗',
+      era: '明中期', source: '青瓷 保存', state: '完好',
+      note: '碗足细高，缠枝莲纹。它不是被谁珍藏下来的，是没人当回事，才躲过一劫。',
+      related: ['r01', 'r06'], x: 30, y: 17, w: 162, rot: 2, z: 11 },
+
+    { id: 'r03', kind: 'main', file: 'assets/relics/relic-03.jpg', name: '玉如意',
+      era: '清', source: '如意 追回', state: '完好',
+      note: '2014 年从老藏家家里被请走，2015 年出现在私下交易群里。有人跑了三趟，把它劝了回来。',
+      related: ['r08', 'r01'], x: 47, y: 25, w: 168, rot: -2, z: 13 },
+
+    { id: 'r04', kind: 'main', file: 'assets/relics/relic-04.jpg', name: '水墨山水长卷',
+      era: '清', source: '长卷 保存', state: '绢面起翘',
+      note: '长卷怕潮。2016 年梅雨季，房间湿度到过 78%。恒温柜申请了三次，驳回了三次。',
+      related: ['r05'], x: 64, y: 16, w: 158, rot: 3, z: 12 },
+
+    { id: 'r05', kind: 'main', file: 'assets/relics/relic-05.jpg', name: '梅花工笔画',
+      era: '清中期 · 绢本', source: '过客 建档', state: '有霉斑',
+      note: '一株梅花。有人给它建了档：每个月拍一次照，记下绢面的变化。',
+      related: ['r04'], x: 80, y: 28, w: 168, rot: -4, z: 14 },
+
+    { id: 'r06', kind: 'main', file: 'assets/relics/relic-06.jpg', name: '斗彩大盘',
+      era: '明宣德 · 斗彩', source: '陈列室', state: '2017-07-16 失窃',
+      note: '柜子没有撬痕，钥匙人手一把，前一晚十点还有人签退。警方说：来源说不清，立案先缓缓。',
+      related: ['r02', 'r07'], x: 20, y: 59, w: 182, rot: 2, z: 15 },
+
+    { id: 'r07', kind: 'main', file: 'assets/relics/relic-07.jpg', name: '四人合影',
+      era: '2016-12-28', source: '博物院门前', state: '手写批注',
+      note: '第一次，也是唯一一次聚齐。右下角有人后来补了一行字：2017.12.28。那天不是合影的日子，是站里最后还有人的一天。',
+      related: ['r06', 'r09'], x: 72, y: 63, w: 192, rot: -3, z: 16 },
+
+    { id: 'r08', kind: 'main', file: 'assets/relics/relic-08.jpg', name: '漆占盘',
+      era: '西汉 · 天文占盘', source: '民间保存', state: '边缘有裂',
+      note: '盘上刻着二十八宿。有人用它占过吉凶，也有人拿它算过一件东西还能留多久。',
+      related: ['r03', 'r09'], x: 42, y: 49, w: 152, rot: 4, z: 13 },
+
+    { id: 'r09', kind: 'main', file: 'assets/relics/relic-09.jpg', name: '鎏金舍利塔',
+      era: '明 · 鎏金', source: '来路不明', state: '待考',
+      note: '照片上没写它叫什么，只写了一行："不知何物，先收着。"后来也没人再提过它。',
+      related: ['r08', 'r07'], x: 55, y: 71, w: 158, rot: -2, z: 14 },
+
+    /* ============ 背景卡（无说明、不可点、互相重叠）============ */
+    { id: 'b10', kind: 'bg', file: 'assets/relics/relic-10.jpg', x: 5,  y: 53, w: 132, rot: -6, z: 3 },
+    { id: 'b11', kind: 'bg', file: 'assets/relics/relic-11.jpg', x: 24, y: 41, w: 128, rot: 5,  z: 2 },
+    { id: 'b12', kind: 'bg', file: 'assets/relics/relic-12.jpg', x: 36, y: 76, w: 138, rot: -4, z: 4 },
+    { id: 'b13', kind: 'bg', file: 'assets/relics/relic-13.jpg', x: 58, y: 36, w: 126, rot: 6,  z: 2 },
+    { id: 'b14', kind: 'bg', file: 'assets/relics/relic-14.jpg', x: 7,  y: 84, w: 120, rot: 4,  z: 3 },
+    { id: 'b15', kind: 'bg', file: 'assets/relics/relic-15.jpg', x: 88, y: 47, w: 134, rot: -5, z: 4 },
+    { id: 'b16', kind: 'bg', file: 'assets/relics/relic-16.jpg', x: 67, y: 85, w: 128, rot: 3,  z: 2 },
+    { id: 'b17', kind: 'bg', file: 'assets/relics/relic-17.jpg', x: 90, y: 13, w: 124, rot: -3, z: 3 },
+    { id: 'b18', kind: 'bg', file: 'assets/relics/relic-18.jpg', x: 4,  y: 15, w: 118, rot: 5,  z: 4 },
+    { id: 'b19', kind: 'bg', file: 'assets/relics/relic-19.jpg', x: 44, y: 87, w: 122, rot: -3, z: 3 },
+    { id: 'b20', kind: 'bg', file: 'assets/relics/relic-20.jpg', x: 78, y: 79, w: 130, rot: 4,  z: 2 },
+    { id: 'b21', kind: 'bg', file: 'assets/relics/relic-21.jpg', x: 92, y: 63, w: 126, rot: -4, z: 3 },
+    { id: 'b22', kind: 'bg', file: 'assets/relics/relic-22.jpg', x: 16, y: 73, w: 116, rot: 6,  z: 2 },
   ]
 };
 

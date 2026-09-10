@@ -3,47 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>文物档案 · 推理板</title>
-<link rel="stylesheet" href="css/theme.css?v=20260910b">
-<link rel="stylesheet" href="css/board.css?v=20260910b">
+<title>线索板 · 古时今日</title>
+<link rel="stylesheet" href="css/theme.css?v=20260912">
+<link rel="stylesheet" href="css/board.css?v=20260912">
+<link rel="stylesheet" href="css/fonts.css?v=20260912">
 </head>
 <body class="board-page">
 
 <div class="board" id="board">
-
-  <!-- 背景层：水印 + 分区框 + 时间轴 + 粉笔标注 -->
   <div class="board-bg" aria-hidden="true">
     <div class="bg-watermark">古时今日</div>
-
-    <div class="zone zone-left"><span>物 · 证</span></div>
-    <div class="zone zone-right"><span>人 · 事</span></div>
-
-    <svg class="bg-axis" viewBox="0 0 1000 40" preserveAspectRatio="none">
-      <line x1="10" y1="20" x2="990" y2="20" stroke="rgba(133,195,232,.22)" stroke-width="1"/>
-    </svg>
-
     <div class="chalk chalk-1">这条线对不上 ——</div>
-    <div class="chalk chalk-2">他最后一次上线：8 月 28 日</div>
+    <div class="chalk chalk-2">最后一次上线：8 月 28 日</div>
     <div class="chalk chalk-3">余额 0 / 无人认领</div>
-
-    <div class="axis-marks">
-      <span style="left:8%">2016.02 · 建站</span>
-      <span style="left:46%">2017.07 · 失窃</span>
-      <span style="left:82%">2018.06 · 最后留言</span>
-    </div>
   </div>
 
-  <!-- 顶部 -->
   <div class="board-head">
     <div class="board-title">文物档案</div>
     <div class="board-rule"><i></i><i></i><i></i></div>
-    <div class="board-sub">线索 <b id="card-count">0</b> 条 · 点开每一张，看清每一条红线</div>
-  </div>
-  <div class="board-stats">
-    <span><b>6</b> 件文物</span>
-    <span><b>5</b> 位记录者</span>
-    <span><b>1</b> 位下落不明</span>
-    <span class="bs-red"><b>1</b> 件文物失窃</span>
+    <div class="board-sub">主线索 <b id="card-count">0</b> 条 · 点开看大图 · 双击翻面看背面的字</div>
   </div>
   <div class="board-actions">
     <a href="index.html">重新看开场</a>
@@ -53,37 +31,40 @@
   <svg id="lines"></svg>
   <div id="pins"></div>
 
-  <!-- 底部图例 -->
   <div class="board-legend">
-    <span><i class="lg lg-photo"></i>照片</span>
-    <span><i class="lg lg-paper"></i>字条</span>
-    <span><i class="lg lg-press"></i>剪报</span>
-    <span><i class="lg lg-doc"></i>文件</span>
-    <span><i class="lg lg-clue"></i>线索</span>
-    <span class="lg-tip">点击板上的照片与纸条，逐份查看档案</span>
+    <span class="lg-tip">正面是照片 · <b>双击翻过来</b>看背面写的字</span>
   </div>
 </div>
 
-<!-- 档案弹窗 -->
-<div class="sheet-mask" id="sheet-mask">
-  <div class="sheet" id="sheet">
-    <div class="sheet-head">
-      <span class="sheet-type" id="s-type">档案</span>
-      <span class="sheet-title" id="s-title">—</span>
-      <span class="sheet-close" id="s-close">✕</span>
+<!-- 看大图 / 翻面 -->
+<div class="lb" id="lb">
+  <span class="lb-index" id="lb-index">— / —</span>
+  <button class="lb-close" id="lb-close">✕</button>
+
+  <div class="lb-stage" id="lb-stage">
+    <div class="lb-card">
+      <div class="lb-face lb-front"><img id="lb-img" alt=""></div>
+      <div class="lb-face lb-back">
+        <div class="lb-name" id="lb-name">—</div>
+        <div class="lb-meta">
+          <div class="lb-row"><span>年 代</span><b id="lb-era">—</b></div>
+          <div class="lb-row"><span>来 源</span><b id="lb-source">—</b></div>
+          <div class="lb-row"><span>现 状</span><b id="lb-state">—</b></div>
+        </div>
+        <div class="lb-note" id="lb-note"></div>
+        <div class="lb-stamp">存 档</div>
+      </div>
     </div>
-    <img class="sheet-img" id="s-img" style="display:none" alt="">
-    <div class="sheet-body" id="s-body"></div>
-    <div class="sheet-meta" id="s-meta"></div>
-    <div class="sheet-stamp" id="s-stamp">古时今日 · 存档</div>
-    <div class="sheet-rel">
-      <div class="sheet-rel-title">相关线索</div>
-      <div id="s-rel"></div>
-    </div>
+  </div>
+
+  <div class="lb-bar">
+    <button id="lb-prev">‹</button>
+    <span class="lb-tip">双击图片 <b>翻面</b> · ← → 换一张 · Esc 关闭</span>
+    <button id="lb-next">›</button>
   </div>
 </div>
 
-<script src="js/archive-data.js?v=20260910b"></script>
-<script src="js/board.js?v=20260910b"></script>
+<script src="js/archive-data.js?v=20260912"></script>
+<script src="js/board.js?v=20260912"></script>
 </body>
 </html>
