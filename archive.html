@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="redblue">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>文物档案 · 推理板</title>
-<link rel="stylesheet" href="css/board.css?v=20260909">
+<link rel="stylesheet" href="css/theme.css?v=20260910">
+<link rel="stylesheet" href="css/board.css?v=20260910">
 </head>
 <body class="board-page">
 
 <div class="board" id="board">
   <div class="board-head">
     <div class="board-title">文物档案</div>
+    <div class="board-rule"><i></i><i></i><i></i></div>
     <div class="board-sub">线索 <b id="card-count">0</b> 条 · 点开每一张，看清每一条红线</div>
   </div>
   <div class="board-actions">
@@ -34,6 +36,7 @@
     </div>
     <img class="sheet-img" id="s-img" style="display:none" alt="">
     <div class="sheet-body" id="s-body"></div>
+    <div class="sheet-stamp" id="s-stamp">古时今日 · 存档</div>
     <div class="sheet-rel">
       <div class="sheet-rel-title">相关线索</div>
       <div id="s-rel"></div>
@@ -41,7 +44,7 @@
   </div>
 </div>
 
-<script src="js/archive-data.js?v=20260909"></script>
-<script src="js/board.js?v=20260909"></script>
+<script src="js/archive-data.js?v=20260910"></script>
+<script src="js/board.js?v=20260910"></script>
 </body>
 </html>

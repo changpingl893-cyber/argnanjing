@@ -8,6 +8,7 @@
   const mask = document.getElementById('sheet-mask');
 
   const TYPE_NAME = { photo: '照片', paper: '字条', press: '剪报', doc: '文件', clue: '线索' };
+  const STAMP_TEXT = { photo: '馆藏影记', paper: '手书 · 存档', press: '剪报 · 存档', doc: '已核 · 存档', clue: '待考 · 存疑' };
   const pinEls = {};
 
   /* ===== 渲染线索卡 ===== */
@@ -88,6 +89,8 @@
     if (!c) return;
     document.getElementById('s-type').textContent = TYPE_NAME[c.type] || '档案';
     document.getElementById('s-title').textContent = c.label;
+    const stamp = document.getElementById('s-stamp');
+    if (stamp) stamp.textContent = STAMP_TEXT[c.type] || '古时今日 · 存档';
     const img = document.getElementById('s-img');
     if (c.image) { img.src = c.image; img.style.display = 'block'; }
     else img.style.display = 'none';
