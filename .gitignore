@@ -10,3 +10,8 @@ _serve*.js
 newphoto/
 images/_original_backup/
 assets/old_photo2_original.jpg
+
+# 本地预览/调试脚本
+_preview-server.js
+_serve*.js
+_debug_*.html
