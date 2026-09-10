@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="redblue">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图片档案 · 古时今日</title>
+<link rel="stylesheet" href="css/theme.css?v=20260911">
+<link rel="stylesheet" href="css/gallery.css?v=20260911">
+<link rel="stylesheet" href="css/fonts.css?v=20260911">
+</head>
+<body class="gallery">
+
+<nav class="g-nav">
+  <span class="g-brand">古时今日 <small>图片档案</small></span>
+  <div class="g-cats" id="cats"></div>
+  <a class="g-home" href="index.html">← 封面</a>
+</nav>
+
+<header class="g-head">
+  <h1 class="g-title">图片档案
+    <small>PHOTOGRAPHIC ARCHIVE · 2016–2018</small>
+  </h1>
+  <div class="g-count">共 <b id="count">0</b> 张 · 点击看大图 · <b>双击翻到背面</b>看档案</div>
+  <div class="g-hint">正面是照片，背面写着它是谁、从哪来、后来怎样。</div>
+</header>
+
+<main class="grid" id="grid"></main>
+
+<!-- 放大欣赏 -->
+<div class="lb" id="lb">
+  <span class="lb-index" id="lb-index">— / —</span>
+  <button class="lb-close" id="lb-close">✕</button>
+
+  <div class="lb-stage" id="lb-stage">
+    <div class="lb-card">
+      <div class="lb-face lb-front"><img id="lb-img" alt=""></div>
+      <div class="lb-face lb-back">
+        <div class="lb-name" id="lb-name">—</div>
+        <div class="lb-meta">
+          <div class="lb-row"><span>年 代</span><b id="lb-era">—</b></div>
+          <div class="lb-row"><span>来 源</span><b id="lb-source">—</b></div>
+          <div class="lb-row"><span>现 状</span><b id="lb-state">—</b></div>
+        </div>
+        <div class="lb-note" id="lb-note"></div>
+        <div class="lb-stamp">存 档</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lb-bar">
+    <button id="lb-prev">‹</button>
+    <span class="lb-tip">双击图片 <b>翻面</b> · ← → 切换 · Esc 关闭</span>
+    <button id="lb-next">›</button>
+  </div>
+</div>
+
+<script src="js/clues-data.js?v=20260911"></script>
+<script src="js/gallery.js?v=20260911"></script>
+</body>
+</html>

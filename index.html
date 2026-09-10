@@ -3,68 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>古时今日 · 文物档案</title>
-<link rel="stylesheet" href="css/theme.css?v=20260910b">
-<link rel="stylesheet" href="css/opening.css?v=20260910b">
-<link rel="stylesheet" href="css/vintage.css?v=20260910b">
+<title>古时今日 · 图片档案</title>
+<link rel="stylesheet" href="css/theme.css?v=20260911">
+<link rel="stylesheet" href="css/opening.css?v=20260911">
+<link rel="stylesheet" href="css/fonts.css?v=20260911">
+<link rel="stylesheet" href="css/vintage.css?v=20260911">
 </head>
 <body class="opening">
 
-<!-- 顶栏（档案导航） -->
 <header class="pro-nav">
-  <span class="pro-nav-brand">古时今日 · 文物档案</span>
+  <span class="pro-nav-brand">古时今日 · 图片档案</span>
   <nav class="pro-nav-links">
-    <a href="#prologue">档案</a>
+    <a href="gallery.html">图片档案</a>
+    <a href="gallery.html?cat=relic">文物线索</a>
     <a href="#relics">文物</a>
-    <a href="archive.html">线索</a>
-    <a href="#about">关于</a>
+    <a href="#about">说明</a>
   </nav>
   <span class="pro-nav-code">NJ · 2016–2018</span>
 </header>
 
-<!-- 第一幕：静默 -->
 <section class="act-silence" id="act-silence">
   <div class="silence-line">档 案 重 新 打 开</div>
 </section>
 
-<!-- 第二幕：序章 -->
 <section class="act-prologue" id="prologue" style="display:none">
   <div class="stage">
-    <div class="line pro-mark" data-step="0" data-delay="300">文物档案 · 编号 2016–2018 · 存 26 篇 · 已封存</div>
+    <div class="line pro-mark" data-step="0" data-delay="300">
+      图片档案 · 共 61 张 · 文物 7 件 · 2016–2018
+    </div>
 
     <h1 class="line pro-title" data-step="1" data-delay="900">
-      有些东西<span>不该被忘记</span>，<br>有些门，关了就不会再开。
+      一些收着的照片
     </h1>
 
     <div class="line pro-rule" data-step="2" data-delay="1500"><i></i><i></i><i></i></div>
 
     <div class="pro-body">
       <p class="line" data-step="3" data-delay="2000">
-        <span class="blue">这里是一个已经消失的网站留下的全部档案。</span>
-        2016 年，有一群人开始记录他们守着的文物——一只碗、一柄如意、一卷山水、一株梅花。
-        他们写下每一次出价、每一次驳回、每一次求助，也写下了后来发生的事情。
+        <span class="blue">这里放着两样东西。</span>
+        一样是几位民间守护者留下的文物照片：一只碗、一柄如意、一卷山水、一株梅花，
+        还有一件已经不在的大盘。另一样是后来收来的图样——古风的底子、别人做的网页、几张配色。
       </p>
       <p class="line" data-step="4" data-delay="2700">
-        <span class="red">2018 年 1 月 2 日，这个网站最后一次被人打开。</span>
-        再之后，没有人来过。帖子里提到的那些人，也再没有出现。
-        我们把这些碎片收拢在这里，请你照着线索，自己看一看当年发生过什么。
+        <span class="red">没有一张照片是新拍的，说明也不是我写的。</span>
+        点开一张看大图；<b>双击</b>，翻过来看背面的字。
       </p>
     </div>
 
-    <!-- 数据带 -->
-    <div class="line stat-band" data-step="5" data-delay="3400">
-      <div class="stat"><b>6</b><span>件文物</span></div>
-      <div class="stat"><b>26</b><span>篇记录</span></div>
-      <div class="stat"><b>2</b><span>年零十一天</span></div>
-      <div class="stat stat-red"><b>1</b><span>件下落不明</span></div>
+    <!-- 四个入口 -->
+    <div class="line entry-block" data-step="5" data-delay="3400">
+      <div class="block-head">
+        <span class="block-no">Ⅰ</span><b>从这里进</b>
+        <span class="block-note">点分类直达</span>
+      </div>
+      <div class="entry-grid">
+        <a class="entry entry-relic" href="gallery.html?cat=relic">
+          <b>文物线索</b><i>7 张 · 六件文物与一张合影</i>
+        </a>
+        <a class="entry" href="gallery.html?cat=web">
+          <b>网页设计</b><i>16 张 · 别人的页面与底子</i>
+        </a>
+        <a class="entry" href="gallery.html?cat=guofeng">
+          <b>古风底图</b><i>28 张 · 山水、器物、园林</i>
+        </a>
+        <a class="entry" href="gallery.html?cat=color">
+          <b>配色样本</b><i>10 张 · 红蓝与国风</i>
+        </a>
+      </div>
     </div>
 
     <!-- 文物阵列 -->
     <div class="line relic-block" data-step="6" data-delay="4100" id="relics">
       <div class="block-head">
-        <span class="block-no">Ⅰ</span>
-        <b>档案涉及的六件文物</b>
-        <span class="block-note">点击"线索"查看它们的下落</span>
+        <span class="block-no">Ⅱ</span><b>档案里的七张照片</b>
+        <span class="block-note">背面都写了话</span>
       </div>
       <div class="relic-strip">
         <figure><img src="images/caiyou-vase.jpg" alt="霁蓝釉瓶"><figcaption><b>霁蓝釉瓶</b><i>守夜人</i></figcaption></figure>
@@ -73,75 +85,71 @@
         <figure><img src="images/landscape.jpg" alt="水墨山水长卷"><figcaption><b>水墨山水长卷</b><i>长卷</i></figcaption></figure>
         <figure><img src="images/plum.jpg" alt="梅花工笔画"><figcaption><b>梅花工笔画</b><i>过客</i></figcaption></figure>
         <figure class="relic-lost"><img src="images/doucai-plate.jpg" alt="斗彩大盘"><figcaption><b>斗彩大盘</b><i>下落不明</i></figcaption></figure>
+        <figure><img src="assets/old_photo2.jpg" alt="四人合影"><figcaption><b>四人合影</b><i>2016.12</i></figcaption></figure>
       </div>
     </div>
 
     <!-- 时间轴 -->
     <div class="line timeline-block" data-step="7" data-delay="4900">
       <div class="block-head">
-        <span class="block-no">Ⅱ</span>
-        <b>两年零十一天</b>
+        <span class="block-no">Ⅲ</span><b>两年零十一天</b>
         <span class="block-note">从建站到再没有人来过</span>
       </div>
       <div class="timeline">
         <i class="tl-line"></i>
         <div class="tl-node">
-          <b>2016 · 初雪</b>
-          <span>六个人建了这个站。他们守着一只碗、一柄如意、一卷山水。</span>
+          <b>2016 · 建站</b>
+          <span>六个人，一只碗、一柄如意、一卷山水。他们在博物院门口拍了一张合影。</span>
         </div>
         <div class="tl-node tl-red">
-          <b>2017 · 崩塌</b>
-          <span>网暴、失窃、注销、失联——一件一件地失去。</span>
+          <b>2017 · 出事</b>
+          <span>大盘不见了；如意失联；长卷走了；青瓷不再上线。</span>
         </div>
         <div class="tl-node">
-          <b>2018 · 遗响</b>
-          <span>最后一条留言之后，再没有人回复。</span>
+          <b>2018 · 停更</b>
+          <span>最后一条留言问"有人吗"，没有人回。</span>
         </div>
       </div>
     </div>
 
     <div class="line pro-foot" data-step="8" data-delay="5700">
-      以下内容包含真实文物的记录与无法核实的个人叙述。<br>
-      请自行判断，你将要看到的东西。
+      照片与文字都按原样收着。其中一部分无法核实，请自行判断。
     </div>
 
-    <!-- 第三幕：老旧弹窗 -->
     <div class="dialog-zone" id="dialog-zone"></div>
   </div>
 </section>
 
-<!-- 离开幕 -->
 <section class="act-leave" id="act-leave">
   <div class="leave-inner">
-    你选择了离开。<br>
-    <small>这个档案会留在这里。等你改主意的时候。<br><a href="#" id="again">重新打开</a></small>
+    那就先不看了。<br>
+    <small>档案搁在这儿，什么时候回来都行。<br><a href="#" id="again">重新打开</a></small>
   </div>
 </section>
 
-<!-- 页脚 -->
 <footer class="pro-footer" id="about">
   <div class="pf-grid">
     <div class="pf-col">
-      <b>关于本档案</b>
-      <p>本页内容整理自一个 2018 年停止更新的民间文物保护站点。原件包含 26 篇记录、6 件文物的照片与往来留言。</p>
+      <b>这是什么</b>
+      <p>一个已经停止更新的民间文物保护站点留下的照片，加上后来收集的一些图样。共 61 张。</p>
     </div>
     <div class="pf-col">
       <b>档案状态</b>
       <p>来源站点：已无法访问<br>最后登录：2018-01-02<br>文字整理：未署名</p>
     </div>
     <div class="pf-col">
-      <b>阅读提示</b>
-      <p>照片与文字均保持原样。其中一部分内容无法核实，请自行判断。</p>
+      <b>怎么看</b>
+      <p>点开一张看大图，双击翻到背面。背面写着它是谁、从哪来、后来怎样。</p>
     </div>
   </div>
   <div class="pf-bottom">
-    <span>古时今日 · 文物档案</span>
-    <span class="pf-stamp">存 档</span>
+    <span>古时今日 · 图片档案</span>
+    <span class="pf-stamp">存档</span>
     <span>NJ · 2016–2018</span>
   </div>
 </footer>
 
-<script src="js/dialog.js?v=20260910b"></script>
-<script src="js/opening.js?v=20260910b"></script>
+<script src="js/dialog.js?v=20260911"></script>
+<script src="js/opening.js?v=20260911"></script>
 </body>
 </html>
