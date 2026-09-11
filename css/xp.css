@@ -1,0 +1,90 @@
+/* Windows XP 风格弹窗（按参考图复刻）：蓝色渐变标题栏 + 红色关闭钮 + 米黄内容区 + 虚线按钮 */
+.xp-overlay {
+  position: fixed; inset: 0; z-index: 200; display: none;
+  background: #000;
+}
+.xp-overlay.show { display: block; }
+
+.xp-win {
+  position: fixed; left: 50%; top: 50%;
+  width: min(560px, 88vw);
+  background: #ece9d8;
+  border: 1px solid #0831d9;
+  border-radius: 9px 9px 3px 3px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .8);
+  font-family: Tahoma, "Segoe UI", "宋体", sans-serif;
+  overflow: hidden;
+  /* 猛然弹出：从略大缩到正常，很快（不依赖透明度，保证任何环境都可见） */
+  transform: translate(-50%, -50%) scale(1.08);
+  animation: xpPop .15s steps(2, end) forwards;
+}
+@keyframes xpPop {
+  0%   { transform: translate(-50%, -50%) scale(1.12); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* 标题栏 */
+.xp-titlebar {
+  height: 44px; display: flex; align-items: center; gap: 8px;
+  padding: 0 6px 0 12px;
+  background: linear-gradient(180deg,
+    #0058ee 0%, #3f8cf3 9%, #1667e8 38%, #0054e3 62%, #0046c8 88%, #003bb8 100%);
+  border-radius: 8px 8px 0 0;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+}
+.xp-title {
+  color: #fff; font-size: 22px; font-weight: 700; letter-spacing: .01em;
+  font-family: Tahoma, "Trebuchet MS", "Segoe UI", sans-serif;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, .65), 0 0 8px rgba(0, 0, 0, .35);
+}
+.xp-close {
+  margin-left: auto; width: 34px; height: 31px; flex: 0 0 auto;
+  border: 1px solid #fff; border-radius: 4px;
+  background: linear-gradient(180deg, #f2a085 0%, #e5673f 40%, #cc3a13 75%, #b02c0a 100%);
+  color: #fff; font-size: 18px; font-weight: 700; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; text-shadow: 1px 1px 1px rgba(0,0,0,.5);
+}
+.xp-close:hover { filter: brightness(1.12); }
+.xp-close:active { filter: brightness(.9); }
+
+/* 内容区 */
+.xp-body {
+  padding: 26px 26px 20px;
+  display: flex; align-items: flex-start; gap: 22px;
+  background: #ece9d8;
+}
+.xp-icon { width: 68px; height: 68px; flex: 0 0 auto; }
+.xp-text {
+  font-size: 18px; color: #000; line-height: 1.7; padding-top: 4px;
+  font-family: Tahoma, "宋体", sans-serif;
+}
+.xp-text small {
+  display: block; margin-top: 10px; font-size: 13px; color: #4a4a4a; line-height: 1.7;
+}
+
+/* 按钮：白底 + 黑实线外框 + 内虚线（XP 焦点样式） */
+.xp-btns {
+  display: flex; justify-content: center; gap: 16px;
+  padding: 2px 26px 26px; background: #ece9d8;
+}
+.xp-btn {
+  min-width: 112px; padding: 7px 20px;
+  font-family: Tahoma, "宋体", sans-serif; font-size: 16px; color: #000;
+  background: linear-gradient(180deg, #fff 0%, #f4f4f0 55%, #e8e8e0 100%);
+  border: 2px solid #000; border-radius: 4px;
+  outline: 1px dotted #000; outline-offset: -5px;
+  cursor: pointer;
+}
+.xp-btn:hover { background: linear-gradient(180deg, #fff 0%, #eef4ff 55%, #dbe6fb 100%); }
+.xp-btn:active { background: #d8d8d0; outline-offset: -5px; }
+.xp-btn.primary { font-weight: 700; }
+
+@media (max-width: 620px) {
+  .xp-win { width: min(94vw, 520px); }
+  .xp-title { font-size: 16px; }
+  .xp-body { padding: 20px 18px 14px; gap: 14px; }
+  .xp-icon { width: 54px; height: 54px; }
+  .xp-text { font-size: 16px; }
+  .xp-btn { min-width: 92px; font-size: 15px; padding: 7px 14px; }
+}

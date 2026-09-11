@@ -161,12 +161,21 @@ body.opening::after {
 .opening .v98-icon.warn { background: var(--red); }
 .opening .v98-close { background: #142544; color: #cfe0f8; border-color: #4c6a9e #060c18 #060c18 #4c6a9e; }
 
+/* ===== 突然全部变黑（弹窗前的一瞬） ===== */
+body.opening.blackout { background: #000; }
+body.opening.blackout::before,
+body.opening.blackout::after { opacity: 0; transition: opacity .18s linear; }
+body.opening.blackout .pro-nav,
+body.opening.blackout .act-prologue,
+body.opening.blackout .pro-footer,
+body.opening.blackout .act-silence { opacity: 0 !important; transition: opacity .18s linear; }
+
 /* ===== 离开幕 ===== */
 .act-leave {
   min-height: 70vh; display: none; align-items: center; justify-content: center;
   text-align: center; opacity: 0; transition: opacity 1.6s ease;
 }
-.act-leave.show { display: flex; opacity: 1; }
+.act-leave.show { display: flex; opacity: 1; position: relative; z-index: 210; }
 .leave-inner { color: #5a6580; font-size: 15px; line-height: 2.4; letter-spacing: .12em; }
 .leave-inner small { display: block; margin-top: 18px; color: #3a4356; font-size: 12px; }
 .leave-inner a { color: var(--blue-soft); text-decoration: none; border-bottom: 1px solid rgba(133, 195, 232, .3); }
